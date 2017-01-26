@@ -13,7 +13,7 @@ exports = module.exports = {
             ContentType: filetype
         };
 
-        s3.getSignedUrl(‘putObject’, params, function(err, data) {
+        s3.getSignedUrl('putObject', params, function(err, data) {
             if (err) {
                 console.log(err);
                 return err;

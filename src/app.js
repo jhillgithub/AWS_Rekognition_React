@@ -2,8 +2,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import ImageUploader from "./components/ImageUploader";
+import DropUploader from "./components/DropUploader";
 
 
 // This code here allows us to render our main component (in this case "Parent")
-ReactDOM.render(<ImageUploader />, document.getElementById("app"));
+ReactDOM.render(<DropUploader />, document.getElementById("app"));
