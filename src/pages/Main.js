@@ -40,8 +40,8 @@ export default class Main extends React.Component {
   }
 
   changeTheme() {
-    var newTheme = this.props.theme === 'happy' ? 'angry' : 'happy';
-    this.props.dispatch(change_theme(newTheme));
+    // var newTheme = this.props.theme === 'happy' ? 'angry' : 'happy';
+    // this.props.dispatch(change_theme(newTheme));
   }
 
   componentDidMount() {
@@ -55,10 +55,10 @@ export default class Main extends React.Component {
 
   selectTheme(theme) {
     switch (theme) {
-      case 'angry':
+      case 'ANGRY':
         return angryTheme;
         break;
-      case 'happy':
+      case 'HAPPY':
         return happyTheme;
         break;
       default:

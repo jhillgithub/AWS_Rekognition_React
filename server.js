@@ -1,45 +1,40 @@
-const express = require('express');
+// Modules
+var express = require(`express`);
 const bodyParser = require('body-parser');
-const app = express();
-// const get_signed_url = './app/get_signed_url';
-var AWS = require('aws-sdk');
-AWS.config.region = 'us-west-2'
-const S3_BUCKET = 'testreactrekognition'
+var path = require(`path`);
 
-const PORT = process.env.PORT || 3000;
+// Express Port/App Declaration
+var PORT = process.env.PORT || 3000;
+var app = express();
 
-app.use(express.static('public'));
-
-// app.use('/posts', posts);
+// Middleware
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: true
 }));
 
+var detectFace = require('./app/rekog');
 
-app.get('/api/v1/getsignedurl', function(req, res) {
-  var S3_BUCKET = 'images_upload'
-
-  var s3 = new AWS.S3()
-  var options = {
-    Bucket: S3_BUCKET,
-    Key: req.query.file_name,
-    Expires: 60,
-    ContentType: req.query.file_type,
-    ACL: 'public-read'
-  }
-
-  s3.getSignedUrl('putObject', options, function(err, data){
-    if(err) return res.send('Error with S3')
-
-    res.json({
-      signed_request: data,
-      url: 'https://s3.amazonaws.com/' + S3_BUCKET + '/' + req.query.file_name
-    })
-  })
-})
+// Routes
+app.post('/rekog', function (req, res) {
 
 
-app.listen(PORT, () => {
-	console.log('server started on port: ', PORT);
+  console.log(req.body.filename);
+
+  detectFace(req.body.filename)
+  .then(function(data) {
+      console.log(data);
+      res.json(data);
+  });
+
+});
+
+app.get(`*`, function(req, res) {
+  res.sendFile('public/index.html', { root: __dirname });
+});
+
+// Connection to PORT
+app.listen(PORT, function() {
+  console.log(`Listening On Port: ${PORT}`);
 });
