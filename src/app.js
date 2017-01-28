@@ -1,9 +1,12 @@
-// Include the Main React Dependencies
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Provider } from "react-redux"
 
-import DropUploader from "./components/DropUploader";
+import routes from './config/routes'
+import store from "./store"
 
-
-// This code here allows us to render our main component (in this case "Parent")
-ReactDOM.render(<DropUploader />, document.getElementById("app"));
+ReactDOM.render(
+  <Provider store={store}>
+    {routes}
+  </Provider>,
+document.getElementById('app'));
