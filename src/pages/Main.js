@@ -58,8 +58,20 @@ export default class Main extends React.Component {
       case 'ANGRY':
         return angryTheme;
         break;
+      case 'CALM':
+        return calmTheme;
+        break;
+      case 'DISGUSTED':
+        return disgustedTheme;
+        break;
       case 'HAPPY':
         return happyTheme;
+        break;
+      case 'SAD':
+        return sadTheme;
+        break;
+      case 'SURPRISED':
+        return surprisedTheme;
         break;
       default:
         return unknownTheme;
@@ -70,7 +82,7 @@ export default class Main extends React.Component {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(this.selectTheme(this.props.theme))}>
         <div>
-            <NavBar />
+            <NavBar title={this.props.theme} />
             <Container>
               {this.props.children}
             </Container>

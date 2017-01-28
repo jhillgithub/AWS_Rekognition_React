@@ -15,6 +15,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 var detectFace = require('./app/rekog');
+var getImages = require('./app/listS3Objects');
 
 // Routes
 app.post('/rekog', function (req, res) {
@@ -28,6 +29,14 @@ app.post('/rekog', function (req, res) {
       res.json(data);
   });
 
+});
+
+app.get('/getimages', function (req, res) {
+  getImages()
+  .then(function(data) {
+    console.log(data);
+    res.json(data);
+  });
 });
 
 app.get(`*`, function(req, res) {

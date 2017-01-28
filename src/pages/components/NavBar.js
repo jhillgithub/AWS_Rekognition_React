@@ -29,9 +29,9 @@ const styles = {
 };
 
 
-const NavBar = () => (
+const NavBar = (props) => (
   <AppBar
-    title={<span style={styles.title}>Title</span>}
+    title={<span style={styles.title}>Detected Emotion: {props.title}</span>}
     onTitleTouchTap={handleTouchTap}
     iconElementRight={
         <div>

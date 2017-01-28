@@ -1,18 +1,19 @@
 import React from 'react';
+import { connect } from "react-redux";
 import { Link } from 'react-router';
 import axios from 'axios';
 import _ from 'lodash';
-import { connect } from "react-redux";
-
-import { change_theme } from '../../actions/action_themes';
-
 import { Row, Col } from 'react-grid-system';
 
+import { change_theme } from '../../actions/action_themes';
+import { update_gallery } from '../../actions/action_gallery';
+
+// Components
 import ImgGallery from './components/ImgGallery';
 
 @connect((store) => {
   return {
-    theme: store.themes.theme
+    images: store.images.images
   };
 })
 export default class Welcome extends React.Component {
@@ -43,14 +44,25 @@ export default class Welcome extends React.Component {
       .catch(function(error) {
         console.log("error: ", error);
       });
+  }
 
+  componentDidMount() {
+    var _this = this;
+    axios.get('/getimages')
+    .then(function(response) {
+      console.log('got images: ', response);
+      _this.props.dispatch(update_gallery(response.data.Contents))
+    })
+    .catch(function(error) {
+      console.log("error: ", error);
+    })
   }
 
   render() {
     return (
       <Row>
         <Col md={8} offset={{ md: 2 }}>
-          <ImgGallery clickHandler={this.clickHandler} />
+          <ImgGallery images={this.props.images} clickHandler={this.clickHandler} />
         </Col>
       </Row>
     );
