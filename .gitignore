@@ -2,3 +2,5 @@
 bundle.js
 npm-debug.log
 .DS_Store
+/d3/
+data.json
