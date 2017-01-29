@@ -1,6 +1,7 @@
 var Promise = require('promise');
 var AWS = require('aws-sdk');
 AWS.config.region = 'us-west-2';
+var _ = require('lodash');
 
 const S3_BUCKET = 'reactrekognition';
 var rekognition = new AWS.Rekognition();
@@ -25,7 +26,8 @@ var detectFace = function (image_file_name) {
           reject(err);
         } else {
           // console.log(JSON.stringify(data, null, 2)); // successful response
-          console.log("typeof", typeof(data));
+          // console.log("received data from rekog: ", JSON.stringify(data, null, 2));
+
           resolve(data);
         }
       }

@@ -3,7 +3,10 @@ var express = require(`express`);
 const bodyParser = require('body-parser');
 var path = require(`path`);
 var fs = require('fs');
-
+var request = require('request-promise')
+var _ = require('lodash');
+var $ = require('jquery');
+var Promise = require('bluebird');
 
 // Express Port/App Declaration
 var PORT = process.env.PORT || 3000;
@@ -19,24 +22,62 @@ app.use(bodyParser.urlencoded({
 var detectFace = require('./app/rekog');
 var getImages = require('./app/listS3Objects');
 
+var base_url = "https://maker.ifttt.com/trigger/rekog/with/key/";
+var url = base_url + process.env.IFTTT_API_KEY;
+
+const emotionToColor = {
+  'ANGRY': 'F44336',
+  'CALM': '607D8B',
+  'CONFUSED': 'FF9800',
+  'DISGUSTED': '673AB7',
+  'HAPPY': '4CAF50',
+  'SAD': '2196F3',
+  'SURPRISED': 'FFC107',
+  'UNKNOWN': '616161',
+};
+
 // Routes
 app.post('/rekog', function (req, res) {
 
-
   console.log(req.body.filename);
 
-  detectFace(req.body.filename)
-  .then(function(data) {
-      console.log(data);
-      fs.writeFile("./data.json", JSON.stringify(data), (err) => {
-          if (err) {
-              console.error(err);
-              return;
-          };
-          console.log("File has been created");
-      });
-      res.json(data);
+  var detectPromise =  detectFace(req.body.filename);
+
+  var huePromise = detectPromise.then(function(faceData) {
+    fs.writeFile("./data.json", JSON.stringify(faceData), (err) => {
+        if (err) {
+            console.error(err);
+            return;
+        };
+        console.log("File has been created");
+    });
+    var emotions = faceData.FaceDetails[0].Emotions;
+    var maxConf = _.maxBy(emotions, 'Confidence');
+    var maxEmotion = maxConf.Type;
+    console.log("max emotion: ", maxEmotion);
+    var color = emotionToColor[maxEmotion];
+
+    console.log("url", url);
+
+    var options = {
+      method: 'POST',
+      uri: url,
+      body: {
+        "value1": color
+      },
+      json: true
+    };
+
+    request(options);
+    return "sent hue request for color: " + color;
   });
+
+  return Promise.all([detectPromise, huePromise]).spread(function(faceData, hueData) {
+    console.log("faceData: ", faceData);
+    console.log("hueData: ", hueData);
+    res.json(faceData);
+  });
+
 
 });
 
