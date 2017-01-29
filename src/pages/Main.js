@@ -35,22 +35,7 @@ export default class Main extends React.Component {
 
   constructor(props) {
     super(props);
-    this.changeTheme = this.changeTheme.bind(this);
     this.selectTheme = this.selectTheme.bind(this);
-  }
-
-  changeTheme() {
-    // var newTheme = this.props.theme === 'happy' ? 'angry' : 'happy';
-    // this.props.dispatch(change_theme(newTheme));
-  }
-
-  componentDidMount() {
-      var ival = setInterval(this.changeTheme, 5000);
-      this.setState({ival: ival});
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.state.ival);
   }
 
   selectTheme(theme) {

@@ -1,7 +1,7 @@
 import { CHANGE_THEME } from '../actions/action_themes';
 
 export default function reducer(state={
-    theme: ''
+    theme: 'UNKNOWN'
   }, action) {
 
     switch (action.type) {

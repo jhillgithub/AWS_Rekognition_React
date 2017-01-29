@@ -7,13 +7,16 @@ import { Row, Col } from 'react-grid-system';
 
 import { change_theme } from '../../actions/action_themes';
 import { update_gallery } from '../../actions/action_gallery';
+import { update_progress } from '../../actions/action_rekog';
 
 // Components
 import ImgGallery from './components/ImgGallery';
+import ProcessingDialog from './components/ProcessingDialog';
 
 @connect((store) => {
   return {
-    images: store.images.images
+    images: store.gallery.images,
+    processing: store.rekog.processing
   };
 })
 export default class Welcome extends React.Component {
@@ -34,14 +37,17 @@ export default class Welcome extends React.Component {
   clickHandler(event) {
     var _this = this;
     console.log(event.target.src);
+    this.props.dispatch(update_progress(true))
 
     var selected_img = event.target.src.split(/(\\|\/)/g).pop();
     axios.post('/rekog', {filename: selected_img})
       .then(function(response) {
         console.log("got face: ", response);
         _this.chooseTheme(response.data.FaceDetails[0].Emotions);
+        _this.props.dispatch(update_progress(false));
       })
       .catch(function(error) {
+        _this.props.dispatch(update_progress(false));
         console.log("error: ", error);
       });
   }
@@ -62,6 +68,7 @@ export default class Welcome extends React.Component {
     return (
       <Row>
         <Col md={8} offset={{ md: 2 }}>
+          <ProcessingDialog processing={this.props.processing} />
           <ImgGallery images={this.props.images} clickHandler={this.clickHandler} />
         </Col>
       </Row>
