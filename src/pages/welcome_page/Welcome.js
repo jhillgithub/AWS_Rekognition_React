@@ -3,8 +3,12 @@ import { connect } from "react-redux";
 import { Link } from 'react-router';
 import axios from 'axios';
 import _ from 'lodash';
-import { Row, Col } from 'react-grid-system';
 
+// UI
+import { Row, Col } from 'react-grid-system';
+import { Card, CardTitle, CardText } from 'material-ui/Card'
+
+// Actions
 import { change_theme } from '../../actions/action_themes';
 import { update_gallery } from '../../actions/action_gallery';
 import { update_progress } from '../../actions/action_rekog';
@@ -66,12 +70,27 @@ export default class Welcome extends React.Component {
 
   render() {
     return (
-      <Row>
-        <Col md={8} offset={{ md: 2 }}>
-          <ProcessingDialog processing={this.props.processing} />
-          <ImgGallery images={this.props.images} clickHandler={this.clickHandler} />
-        </Col>
-      </Row>
+      <div>
+        <Row>
+          <Col md={12} style={{marginBottom: "60px"}}>
+            <ProcessingDialog processing={this.props.processing} />
+            <Card style={{textAlign: "center"}}>
+              <CardTitle
+                title="Choose an image to get started"
+              />
+              <CardText>
+                <ImgGallery images={this.props.images} clickHandler={this.clickHandler} />
+              </CardText>
+            </Card>
+
+          </Col>
+        </Row>
+        <Row>
+            <Col md={12}>
+                Add Selected Image Here...
+            </Col>
+        </Row>
+      </div>
     );
   }
 }

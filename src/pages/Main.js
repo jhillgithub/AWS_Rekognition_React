@@ -17,6 +17,7 @@ import sadTheme from '../themes/sad';
 import disgustedTheme from '../themes/disgusted';
 import surprisedTheme from '../themes/surprised';
 import calmTheme from '../themes/calm';
+import confusedTheme from '../themes/confused';
 import unknownTheme from '../themes/unknown';
 
 // Components
@@ -57,6 +58,9 @@ export default class Main extends React.Component {
         break;
       case 'SURPRISED':
         return surprisedTheme;
+        break;
+      case 'CONFUSED':
+        return confusedTheme;
         break;
       default:
         return unknownTheme;

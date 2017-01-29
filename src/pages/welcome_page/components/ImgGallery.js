@@ -18,20 +18,10 @@ const styles = {
   },
 };
 
-// const tilesData = [
-//   {
-//     title: 'nicAngry1',
-//     img: 'http://reactrekognition.s3-us-west-2.amazonaws.com/nicAngry1.jpg',
-//   },
-//   {
-//     title: 'nicHappy1',
-//     img: 'http://reactrekognition.s3-us-west-2.amazonaws.com/nicHappy1.jpg',
-//   }
-// ];
 const base_url = "https://s3-us-west-2.amazonaws.com/reactrekognition/";
-const GridListExampleSingleLine = (props) => (
+const ImgGalleray = (props) => (
   <div style={styles.root}>
-    <GridList style={styles.gridList} cols={2.2}>
+    <GridList style={styles.gridList} cols={4.2}>
       {props.images.map((image) => (
         <GridTile
           key={image.ETag}
@@ -46,4 +36,4 @@ const GridListExampleSingleLine = (props) => (
   </div>
 );
 
-export default GridListExampleSingleLine;
+export default ImgGalleray;

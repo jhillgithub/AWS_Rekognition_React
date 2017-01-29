@@ -28,7 +28,7 @@ export default class DialogExampleSimple extends React.Component {
     return (
       <div>
         <Dialog
-          title="Processing Image..."
+          title="Processing with AWS Rekognition Deep Learning Algorithm..."
           modal={true}
           open={this.state.open}
           onRequestClose={this.handleClose}
