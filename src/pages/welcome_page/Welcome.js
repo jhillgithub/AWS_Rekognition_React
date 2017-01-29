@@ -6,12 +6,13 @@ import _ from 'lodash';
 
 // UI
 import { Row, Col } from 'react-grid-system';
-import { Card, CardTitle, CardText } from 'material-ui/Card'
+import { Card, CardTitle, CardText, CardMedia } from 'material-ui/Card'
 
 // Actions
 import { change_theme } from '../../actions/action_themes';
 import { update_gallery } from '../../actions/action_gallery';
 import { update_progress } from '../../actions/action_rekog';
+import { select_image, update_boundingbox } from '../../actions/index';
 
 // Components
 import ImgGallery from './components/ImgGallery';
@@ -20,7 +21,9 @@ import ProcessingDialog from './components/ProcessingDialog';
 @connect((store) => {
   return {
     images: store.gallery.images,
-    processing: store.rekog.processing
+    processing: store.rekog.processing,
+    selected_image: store.selected_image,
+    boundingbox: store.boundingbox
   };
 })
 export default class Welcome extends React.Component {
@@ -28,6 +31,10 @@ export default class Welcome extends React.Component {
     super(props);
     this.chooseTheme = this.chooseTheme.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
+    this.state = {
+      base_url: "https://s3-us-west-2.amazonaws.com/reactrekognition/"
+
+    }
   }
 
   chooseTheme(emotions) {
@@ -41,14 +48,16 @@ export default class Welcome extends React.Component {
   clickHandler(event) {
     var _this = this;
     console.log(event.target.src);
-    this.props.dispatch(update_progress(true))
-
     var selected_img = event.target.src.split(/(\\|\/)/g).pop();
+    this.props.dispatch(update_progress(true))
+    this.props.dispatch(select_image(selected_img));
+
     axios.post('/rekog', {filename: selected_img})
       .then(function(response) {
         console.log("got face: ", response);
         _this.chooseTheme(response.data.FaceDetails[0].Emotions);
         _this.props.dispatch(update_progress(false));
+        _this.props.dispatch(update_boundingbox(response.data.FaceDetails[0].BoundingBox));
       })
       .catch(function(error) {
         _this.props.dispatch(update_progress(false));
@@ -69,6 +78,19 @@ export default class Welcome extends React.Component {
   }
 
   render() {
+    const boundingBox = {
+      left: (this.props.boundingbox.Left*100) + "%",
+      top: (this.props.boundingbox.Top*100) + "%",
+      height: (this.props.boundingbox.Height*100) + "%",
+      width: (this.props.boundingbox.Width*100) + "%",
+      position: "absolute",
+      zIndex: 1,
+      backgroundColor: "tranparent",
+      border: "4px solid green"
+    };
+
+    var boundingBoxStyle = this.props.selected_image ? boundingBox : {display: "hidden"};
+
     return (
       <div>
         <Row>
@@ -79,7 +101,10 @@ export default class Welcome extends React.Component {
                 title="Choose an image to get started"
               />
               <CardText>
-                <ImgGallery images={this.props.images} clickHandler={this.clickHandler} />
+                <ImgGallery
+                  base_url={this.state.base_url}
+                  images={this.props.images}
+                  clickHandler={this.clickHandler} />
               </CardText>
             </Card>
 
@@ -87,7 +112,14 @@ export default class Welcome extends React.Component {
         </Row>
         <Row>
             <Col md={12}>
-                Add Selected Image Here...
+              <Card style={{textAlign: "center"}}>
+                <CardMedia>
+                  <div>
+                    <img src={this.props.selected_image ? this.state.base_url + this.props.selected_image: ""} />
+                    <div style={boundingBoxStyle}></div>
+                  </div>
+                </CardMedia>
+              </Card>
             </Col>
         </Row>
       </div>
