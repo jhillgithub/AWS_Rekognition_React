@@ -22,7 +22,7 @@ export default class DropUploader extends React.Component {
             server: 'http://localhost:3000',
             s3Url: 'https://testreactrekognition.s3.amazonaws.com',
             signingUrlQueryParams: {
-                uploadType: 'avatar'
+                uploadType: 'image'
             }
         };
         return (

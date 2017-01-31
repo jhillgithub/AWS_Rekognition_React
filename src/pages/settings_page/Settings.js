@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-import { Row, Col } from 'react-grid-system'
+import { Row, Col } from 'react-grid-system';
 
-import { Card, CardTitle, CardText } from 'material-ui/Card'
-
+import { Card, CardTitle, CardText } from 'material-ui/Card';
+import ImageUploader from '../../components/ImageUploader';
+import DropzoneComponentWrapper from '../../components/DropzoneComponentWrapper';
+import DropUploader from '../../components/DropUploader';
 
 export default class SecondPage extends React.Component {
 
@@ -11,13 +13,15 @@ export default class SecondPage extends React.Component {
     return (
       <Row>
         <Col md={8} offset={{ md: 2 }}>
-          <Card>
+          <Card style={{textAlign: "center"}}>
             <CardTitle
               title="Welcome To Settings!"
               subtitle="WooHoo"
             />
             <CardText>
-              We need to add some settings here...
+              {/* <DropUploader /> */}
+              <DropzoneComponentWrapper />
+              {/* <ImageUploader /> */}
             </CardText>
           </Card>
         </Col>

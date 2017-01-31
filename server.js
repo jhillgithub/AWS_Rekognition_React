@@ -7,6 +7,8 @@ var request = require('request-promise')
 var _ = require('lodash');
 var $ = require('jquery');
 var Promise = require('bluebird');
+var sign = require('./app/get_signed_url');
+var multer = require('multer');
 
 // Express Port/App Declaration
 var PORT = process.env.PORT || 3000;
@@ -80,6 +82,19 @@ app.post('/rekog', function (req, res) {
 
 
 });
+
+app.post('/sign', function (req, res) {
+  sign(req.body.filename, req.body.filetype)
+  .then(function(url) {
+    res.json({signedUrl: url});
+  })
+
+  // console.log("sign: ", sign('req', 'image/png'));
+  // res.send(sign())
+});
+
+// require('./app/uploadHandler')(app);
+require('./app/multerS3')(app);
 
 app.get('/getimages', function (req, res) {
   getImages()
