@@ -24,7 +24,7 @@ const ImgGalleray = (props) => (
     <GridList style={styles.gridList} cols={4.2}>
       {props.images.map((image) => (
         <GridTile
-          key={image.ETag}
+          key={image.Key}
           title={image.Key}
           titleStyle={styles.titleStyle}
           titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
