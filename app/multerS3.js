@@ -1,22 +1,3 @@
-var detectFace = require('./rekog');
-var Promise = require('bluebird');
-var request = require('request-promise')
-var _ = require('lodash');
-
-var base_url = "https://maker.ifttt.com/trigger/rekog/with/key/";
-var url = base_url + process.env.IFTTT_API_KEY;
-
-const emotionToColor = {
-  'ANGRY': 'F44336',
-  'CALM': '607D8B',
-  'CONFUSED': 'FF9800',
-  'DISGUSTED': '673AB7',
-  'HAPPY': '4CAF50',
-  'SAD': '2196F3',
-  'SURPRISED': 'FFC107',
-  'UNKNOWN': '616161',
-};
-
 module.exports = (app) => {
   const multer = require('multer');
   var fs = require('fs');
@@ -65,36 +46,7 @@ module.exports = (app) => {
             return res.status(500).send('failed to upload to s3').end();
         }
         console.log("data from s3", data.key);
-
-        var detectPromise =  detectFace(data.key);
-        var huePromise = detectPromise.then(function(faceData) {
-          var emotions = faceData.FaceDetails[0].Emotions;
-          var maxConf = _.maxBy(emotions, 'Confidence');
-          var maxEmotion = maxConf.Type;
-          console.log("max emotion: ", maxEmotion);
-          var color = emotionToColor[maxEmotion];
-
-          console.log("url", url);
-
-          var options = {
-            method: 'POST',
-            uri: url,
-            body: {
-              "value1": color
-            },
-            json: true
-          };
-
-          request(options);
-          return "sent hue request for color: " + color;
-        });
-
-        return Promise.all([detectPromise, huePromise]).spread(function(faceData, hueData) {
-          console.log("faceData: ", faceData);
-          console.log("hueData: ", hueData);
-          res.json(faceData);
-        });
-        // res.send({ responseText: data.Location.replace(/"/g, '&quot;')});
+        res.send({ selected_file: data.key });
     });
   });
 

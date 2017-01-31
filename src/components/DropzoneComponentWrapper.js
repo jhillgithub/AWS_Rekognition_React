@@ -1,7 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
+import _ from 'lodash';
+
+
+// Components
 import DropzoneComponent from 'react-dropzone-component';
+
+// Actions
 import { change_theme } from '../actions/action_themes';
+import { update_progress } from '../actions/action_rekog';
 
 import { connect } from "react-redux";
 
@@ -47,8 +55,28 @@ export default class DropzoneComponentWrapper extends React.Component {
         this.dropzone = null;
     }
 
+    chooseTheme(emotions) {
+      console.log(emotions);
+      var maxConf = _.maxBy(emotions, 'Confidence');
+      var maxEmotion = maxConf.Type;
+      console.log(maxEmotion);
+      this.props.dispatch(change_theme(maxEmotion));
+    }
+
+
     success(file) {
+      var _this = this;
       console.log(file);
+      axios.post('/rekog', {filename: file.name})
+        .then(function(response) {
+          console.log("got face: ", response);
+          _this.chooseTheme(response.data.FaceDetails[0].Emotions);
+          _this.props.dispatch(update_progress(false));
+        })
+        .catch(function(error) {
+          _this.props.dispatch(update_progress(false));
+          console.log("error: ", error);
+        });
       // change theme here
 
     }
