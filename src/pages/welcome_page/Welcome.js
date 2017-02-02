@@ -11,17 +11,20 @@ import { Card, CardTitle, CardText, CardMedia } from 'material-ui/Card'
 // Actions
 import { change_theme } from '../../actions/action_themes';
 import { update_gallery } from '../../actions/action_gallery';
-import { update_progress } from '../../actions/action_rekog';
+import { update_progress, save_face_data } from '../../actions/action_rekog';
 import { select_image, update_boundingbox } from '../../actions/index';
 
 // Components
 import ImgGallery from './components/ImgGallery';
 import ProcessingDialog from './components/ProcessingDialog';
+import EmotionsRadarChart from './components/EmotionsRadarChart';
+
 
 @connect((store) => {
   return {
     images: store.gallery.images,
     processing: store.rekog.processing,
+    face: store.rekog.face,
     selected_image: store.selected_image,
     boundingbox: store.boundingbox
   };
@@ -58,6 +61,7 @@ export default class Welcome extends React.Component {
         _this.chooseTheme(response.data.FaceDetails[0].Emotions);
         _this.props.dispatch(update_progress(false));
         _this.props.dispatch(update_boundingbox(response.data.FaceDetails[0].BoundingBox));
+        _this.props.dispatch(save_face_data(response.data.FaceDetails[0]))
       })
       .catch(function(error) {
         _this.props.dispatch(update_progress(false));
@@ -75,6 +79,10 @@ export default class Welcome extends React.Component {
     .catch(function(error) {
       console.log("error: ", error);
     })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log("Next Props: ",nextProps.face);
   }
 
   render() {
@@ -119,6 +127,9 @@ export default class Welcome extends React.Component {
                     <div style={boundingBoxStyle}></div>
                   </div>
                 </CardMedia>
+                <CardText>
+                  {/* <EmotionsRadarChart {...this.props} /> */}
+                </CardText>
               </Card>
             </Col>
         </Row>
