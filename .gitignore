@@ -4,3 +4,4 @@ npm-debug.log
 .DS_Store
 /d3/
 data.json
+public/*.jpg
