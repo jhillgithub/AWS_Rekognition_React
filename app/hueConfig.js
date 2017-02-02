@@ -1,4 +1,5 @@
-var base_url = "https://maker.ifttt.com/trigger/rekog/with/key/";
+// var base_url = "https://maker.ifttt.com/trigger/rekog/with/key/";
+var base_url = "localhost";
 var url = base_url + process.env.IFTTT_API_KEY;
 
 const emotionToColor = {

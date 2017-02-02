@@ -18,6 +18,7 @@ import { select_image, update_boundingbox } from '../../actions/index';
 import ImgGallery from './components/ImgGallery';
 import ProcessingDialog from './components/ProcessingDialog';
 import EmotionsRadarChart from './components/EmotionsRadarChart';
+import EmotionsPolarChart from './components/EmotionsPolarChart';
 
 
 @connect((store) => {
@@ -122,13 +123,16 @@ export default class Welcome extends React.Component {
             <Col md={12}>
               <Card style={{textAlign: "center"}}>
                 <CardMedia>
-                  <div>
-                    <img src={this.props.selected_image ? this.state.base_url + this.props.selected_image: ""} />
-                    <div style={boundingBoxStyle}></div>
-                  </div>
+
                 </CardMedia>
                 <CardText>
-                  {/* <EmotionsRadarChart {...this.props} /> */}
+                  <div>
+                    <img src={this.props.selected_image ? this.state.base_url + this.props.selected_image: ""}>
+                      <div style={boundingBoxStyle}></div>
+                    </img>
+                  </div>
+                  <EmotionsRadarChart {...this.props} />
+                  <EmotionsPolarChart {...this.props} />
                 </CardText>
               </Card>
             </Col>
