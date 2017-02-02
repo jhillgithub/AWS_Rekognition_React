@@ -28,6 +28,7 @@ function getData(face) {
   }
 }
 export default (props) => {
+  //http://stackoverflow.com/questions/19590865/from-an-array-of-objects-extract-value-of-a-property-as-array
   var _data = getData(props.face);
   _data.sort(function(a, b) {
     return parseFloat(a.Confidence) - parseFloat(b.Confidence);

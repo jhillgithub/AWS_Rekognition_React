@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+  path {
+    fill: #ddd;
+    fill-opacity: .8;
+    stroke: #fff;
+    stroke-width: 1.5px;
+    }
+
+    line {
+    stroke: #999;
+    }
+  </style>
+</head>
+<body>
+  <!-- <script src="./d3.v3.min.js"></script> -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.20/topojson.min.js"></script> -->
+  <canvas width="960" height="960"></canvas>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/d3-voronoi.v1.min.js"></script>
+
+  <script>
+
+var graph = {
+  nodes: [{
+      "Type": "eyeLeft",
+      "x": 0.35211098194122314,
+      "y": 0.43077629804611206
+  }, {
+      "Type": "eyeRight",
+      "x": 0.5527692437171936,
+      "y": 0.43073004484176636
+  }, {
+      "Type": "nose",
+      "x": 0.4476723372936249,
+      "y": 0.6492867469787598
+  }, {
+      "Type": "mouthLeft",
+      "x": 0.3698066473007202,
+      "y": 0.7442172765731812
+  }, {
+      "Type": "mouthRight",
+      "x": 0.5253819227218628,
+      "y": 0.7406424880027771
+  }, {
+      "Type": "leftPupil",
+      "x": 0.33753904700279236,
+      "y": 0.41986364126205444
+  }, {
+      "Type": "rightPupil",
+      "x": 0.571234405040741,
+      "y": 0.4201573133468628
+  }, {
+      "Type": "leftEyeBrowLeft",
+      "x": 0.2743079662322998,
+      "y": 0.3756421208381653
+  }, {
+      "Type": "leftEyeBrowRight",
+      "x": 0.34085023403167725,
+      "y": 0.3743889033794403
+  }, {
+      "Type": "leftEyeBrowUp",
+      "x": 0.40473175048828125,
+      "y": 0.40326058864593506
+  }, {
+      "Type": "rightEyeBrowLeft",
+      "x": 0.495032399892807,
+      "y": 0.40936583280563354
+  }, {
+      "Type": "rightEyeBrowRight",
+      "x": 0.5571911931037903,
+      "y": 0.36993369460105896
+  }, {
+      "Type": "rightEyeBrowUp",
+      "x": 0.6261800527572632,
+      "y": 0.3613588809967041
+  }, {
+      "Type": "leftEyeLeft",
+      "x": 0.309949666261673,
+      "y": 0.428787499666214
+  }, {
+      "Type": "leftEyeRight",
+      "x": 0.3944394290447235,
+      "y": 0.44006791710853577
+  }, {
+      "Type": "leftEyeUp",
+      "x": 0.3537428081035614,
+      "y": 0.407586932182312
+  }, {
+      "Type": "leftEyeDown",
+      "x": 0.35039564967155457,
+      "y": 0.4503144323825836
+  }, {
+      "Type": "rightEyeLeft",
+      "x": 0.5120516419410706,
+      "y": 0.44072577357292175
+  }, {
+      "Type": "rightEyeRight",
+      "x": 0.5937941074371338,
+      "y": 0.42660146951675415
+  }, {
+      "Type": "rightEyeUp",
+      "x": 0.5522245764732361,
+      "y": 0.4093174338340759
+  }, {
+      "Type": "rightEyeDown",
+      "x": 0.5531604886054993,
+      "y": 0.4492090940475464
+  }, {
+      "Type": "noseLeft",
+      "x": 0.40244171023368835,
+      "y": 0.6571410298347473
+  }, {
+      "Type": "noseRight",
+      "x": 0.4948514699935913,
+      "y": 0.6599990725517273
+  }, {
+      "Type": "mouthUp",
+      "x": 0.4484475553035736,
+      "y": 0.7506720423698425
+  }, {
+      "Type": "mouthDown",
+      "x": 0.44451695680618286,
+      "y": 0.8076989054679871
+  }]
+};
+
+// var width = 960,
+//     height = 500;
+//
+// var path = d3.geo.path(),
+//     force = d3.layout.force().size([width, height]);
+//
+// var svg = d3.select("body").append("svg")
+//     .attr("width", width)
+//     .attr("height", height);
+
+var nodes = [];
+var links = [];
+
+// graph.nodes.map(obj => obj.x)
+nodes = graph.nodes.map(function(obj){return {x:obj.x*100, y:obj.y*100}});
+
+d3.voronoi().links(nodes).forEach(function(link) {
+    var dx = link.source.x - link.target.x,
+        dy = link.source.y - link.target.y;
+    link.distance = Math.sqrt(dx * dx + dy * dy);
+    links.push(link);
+  });
+console.log(links);
+  var canvas = document.querySelector("canvas"),
+      context = canvas.getContext("2d"),
+      width = canvas.width,
+      height = canvas.height;
+
+  d3.select(canvas)
+      .call(d3.drag()
+          .container(canvas)
+          .subject(dragsubject)
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended));
+
+  function ticked() {
+    context.clearRect(0, 0, width, height);
+    context.save();
+    context.translate(width / 2, height / 2);
+
+    context.beginPath();
+    links.forEach(drawLink);
+    context.strokeStyle = "#aaa";
+    context.stroke();
+
+    context.beginPath();
+    nodes.forEach(drawNode);
+    context.fill();
+    context.strokeStyle = "#fff";
+    context.stroke();
+
+    context.restore();
+  }
+
+  function dragsubject() {
+    return simulation.find(d3.event.x - width / 2, d3.event.y - height / 2);
+  }
+
+  function dragstarted() {
+    if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+    d3.event.subject.fx = d3.event.subject.x;
+    d3.event.subject.fy = d3.event.subject.y;
+  }
+
+  function dragged() {
+    d3.event.subject.fx = d3.event.x;
+    d3.event.subject.fy = d3.event.y;
+  }
+
+  function dragended() {
+    if (!d3.event.active) simulation.alphaTarget(0);
+    d3.event.subject.fx = null;
+    d3.event.subject.fy = null;
+  }
+
+  function drawLink(d) {
+    context.moveTo(d.source.x, d.source.y);
+    context.lineTo(d.target.x, d.target.y);
+  }
+
+  function drawNode(d) {
+    context.moveTo(d.x + 3, d.y);
+    context.arc(d.x, d.y, 3, 0, 2 * Math.PI);
+  }
+  // force
+  //       .gravity(0)
+  //       .nodes(nodes)
+  //       .links(links)
+  //       .linkDistance(function(d) { return d.distance; })
+  //       .start();
+  //
+  //   var link = svg.selectAll("line")
+  //       .data(links)
+  //     .enter().append("line")
+  //       .attr("x1", function(d) { return d.source.x; })
+  //       .attr("y1", function(d) { return d.source.y; })
+  //       .attr("x2", function(d) { return d.target.x; })
+  //       .attr("y2", function(d) { return d.target.y; });
+  //
+  //   var node = svg.selectAll("g")
+  //       .data(nodes)
+  //     .enter().append("g")
+  //       .attr("transform", function(d) { return "translate(" + -d.x + "," + -d.y + ")"; })
+  //       .call(force.drag)
+  //     .append("path")
+  //       .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+  //       .attr("d", function(d) { return path(d.feature); });
+  //
+  //   force.on("tick", function(e) {
+  //     link.attr("x1", function(d) { return d.source.x; })
+  //         .attr("y1", function(d) { return d.source.y; })
+  //         .attr("x2", function(d) { return d.target.x; })
+  //         .attr("y2", function(d) { return d.target.y; });
+  //
+  //     node.attr("transform", function(d) {
+  //       return "translate(" + d.x + "," + d.y + ")";
+  //     });
+  //   });
+</script>
+</body>
+</html>
