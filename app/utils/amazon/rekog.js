@@ -1,11 +1,15 @@
+/**
+* This function will connect to AWS Rekognition and run a Deep Learning
+* facial recognition algorithm on an image hosted in an S3 bucket.
+* The service returns a json data structure with information about the
+* facial features and emotions detected in the image.
+**/
 var Promise = require('promise');
 var AWS = require('aws-sdk');
 AWS.config.region = 'us-west-2';
-var _ = require('lodash');
 
 const S3_BUCKET = 'reactrekognition';
 var rekognition = new AWS.Rekognition();
-
 
 
 var detectFace = function (image_file_name) {
@@ -22,19 +26,14 @@ var detectFace = function (image_file_name) {
   return new Promise(function(resolve, reject) {
     rekognition.detectFaces(params, function(err, data) {
         if (err){
-          console.log(err, err.stack); // an error occurred
+          console.log(err, err.stack);
           reject(err);
         } else {
-          // console.log(JSON.stringify(data, null, 2)); // successful response
-          // console.log("received data from rekog: ", JSON.stringify(data, null, 2));
-
           resolve(data);
         }
       }
     );
   });
-
-
 }
 
 module.exports = detectFace;

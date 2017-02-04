@@ -1,3 +1,8 @@
+/**
+* This method connects to a S3 bucket and sends back a list of all objects
+* stored in that bucket. This is used to build an image gallery in
+* the client side code.
+**/
 var Promise = require('promise');
 var AWS = require('aws-sdk');
 AWS.config.region = 'us-west-2';
@@ -14,11 +19,8 @@ var getImages = function () {
   return new Promise(function(resolve, reject) {
     s3.listObjects(params, function(err, data) {
         if (err){
-          console.log(err, err.stack); // an error occurred
           reject(err);
         } else {
-          // console.log(JSON.stringify(data, null, 2)); // successful response
-          console.log("typeof", typeof(data));
           resolve(data);
         }
       }
