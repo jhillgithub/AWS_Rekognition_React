@@ -7,6 +7,7 @@ import galleryReducer from "./reducer_gallery"
 import rekogReducer from "./reducer_rekog"
 import selectedReducer from "./reducer_selected"
 import boundingboxReducer from "./reducer_boundingbox"
+import hueReducer from "./reducer_hue"
 
 export default combineReducers({
   user,
@@ -15,5 +16,6 @@ export default combineReducers({
   gallery: galleryReducer,
   rekog: rekogReducer,
   selected_image: selectedReducer,
-  boundingbox: boundingboxReducer
+  boundingbox: boundingboxReducer,
+  hue: hueReducer
 })
