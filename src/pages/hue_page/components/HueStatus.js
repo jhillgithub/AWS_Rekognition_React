@@ -10,7 +10,7 @@ export default (props) => {
         <CardTitle title="Hue Connection Status" />
         <CardText>
             <div>
-                {JSON.stringify(props.hue)}
+                {JSON.stringify(props.hue, null, 2)}
                 <RaisedButton
                   label="Test Connection"
                   primary={true}
