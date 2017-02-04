@@ -52,10 +52,14 @@ const emotionToColor = {
   },
 };
 
-function convertEmotionToColor(emotions) {
+export function findMaxEmotion(emotions) {
   var maxConf = _.maxBy(emotions, 'Confidence');
   var maxEmotion = maxConf.Type;
-  var color = emotionToColor[maxEmotion];
+  return maxEmotion;
+}
+
+export function convertEmotionToHueColor(emotion) {
+  var color = emotionToColor[emotion];
   return color;
 }
 
@@ -66,9 +70,11 @@ export function detectFace(selected_img, hue) {
   var hue_promise = rekog_promise.then(function(rekog_response) {
     // convert rekog_response to colors
     var emotions = rekog_response.data.FaceDetails[0].Emotions;
-    var hueSettings = convertEmotionToColor(emotions);
+    var maxEmotion = findMaxEmotion(emotions);
+    var hueSettings = convertEmotionToHueColor(maxEmotion);
     if (hue.hueConnected) {
-      return axios.put(HUE_URL, hueSettings);
+      axios.put(HUE_URL, hueSettings);
+      return maxEmotion;
     } else {
       return "Please Connect Hue"
     }

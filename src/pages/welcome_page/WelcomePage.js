@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { Link } from 'react-router';
 import axios from 'axios';
-import _ from 'lodash';
 
 // UI
 import { Row, Col } from 'react-grid-system';
@@ -21,7 +19,7 @@ import EmotionsRadarChart from './components/EmotionsRadarChart';
 import EmotionsPolarChart from './components/EmotionsPolarChart';
 
 // Utils
-import { detectFace } from './utils';
+import { detectFace } from '../utils';
 
 @connect((store) => {
   return {
@@ -36,20 +34,10 @@ import { detectFace } from './utils';
 export default class WelcomePage extends React.Component {
   constructor(props) {
     super(props);
-    this.chooseTheme = this.chooseTheme.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
     this.state = {
       base_url: "https://s3-us-west-2.amazonaws.com/reactrekognition/"
-
     }
-  }
-
-  chooseTheme(emotions) {
-    console.log(emotions);
-    var maxConf = _.maxBy(emotions, 'Confidence');
-    var maxEmotion = maxConf.Type;
-    console.log(maxEmotion);
-    this.props.dispatch(change_theme(maxEmotion));
   }
 
   clickHandler(event) {
@@ -61,29 +49,14 @@ export default class WelcomePage extends React.Component {
 
     detectFace(selected_img, this.props.hue)
     .then(axios.spread(function(rekog_response, hue_response) {
-      console.log("got face: ", rekog_response);
-      _this.chooseTheme(rekog_response.data.FaceDetails[0].Emotions);
       _this.props.dispatch(update_progress(false));
-      _this.props.dispatch(update_boundingbox(rekog_response.data.FaceDetails[0].BoundingBox));
+      _this.props.dispatch(change_theme(hue_response))
       _this.props.dispatch(save_face_data(rekog_response.data.FaceDetails[0]))
+      _this.props.dispatch(update_boundingbox(rekog_response.data.FaceDetails[0].BoundingBox));
     }))
     .catch(function(error) {
       _this.props.dispatch(update_progress(false));
-      console.log("error: ", error);
     });
-
-    // axios.post('/rekog', {filename: selected_img})
-    //   .then(function(response) {
-    //     console.log("got face: ", response);
-    //     _this.chooseTheme(response.data.FaceDetails[0].Emotions);
-    //     _this.props.dispatch(update_progress(false));
-    //     _this.props.dispatch(update_boundingbox(response.data.FaceDetails[0].BoundingBox));
-    //     _this.props.dispatch(save_face_data(response.data.FaceDetails[0]))
-    //   })
-    //   .catch(function(error) {
-    //     _this.props.dispatch(update_progress(false));
-    //     console.log("error: ", error);
-    //   });
   }
 
   componentDidMount() {
@@ -96,10 +69,6 @@ export default class WelcomePage extends React.Component {
     .catch(function(error) {
       console.log("error: ", error);
     })
-  }
-
-  componentWillReceiveProps(nextProps) {
-    console.log("Next Props: ",nextProps.face);
   }
 
   render() {

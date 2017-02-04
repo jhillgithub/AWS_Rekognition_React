@@ -43,7 +43,7 @@ const NavBar = (props) => (
             </Link>
             <Link to={'/hue'} style={styles.link}>
                 <FlatButton
-                    label="Hue Settings"
+                    label="Connect Hue"
                     style={styles.link}
                  />
             </Link>

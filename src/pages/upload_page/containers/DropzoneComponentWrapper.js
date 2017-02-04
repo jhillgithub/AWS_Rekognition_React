@@ -1,25 +1,23 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { connect } from "react-redux";
 import axios from 'axios';
-import _ from 'lodash';
-
 
 // Components
 import DropzoneComponent from 'react-dropzone-component';
 
 // Actions
-import { change_theme } from '../actions/action_themes';
-import { update_progress } from '../actions/action_rekog';
+import { change_theme } from '../../../actions/action_themes';
+import { update_progress } from '../../../actions/action_rekog';
 
-import { connect } from "react-redux";
+// Utils
+import { detectFace } from '../../utils';
 
 
 @connect((store) => {
   return {
-    images: store.gallery.images,
     processing: store.rekog.processing,
-    selected_image: store.selected_image,
-    boundingbox: store.boundingbox
+    face: store.rekog.face,
+    hue: store.hue
   };
 })
 export default class DropzoneComponentWrapper extends React.Component {
@@ -55,34 +53,18 @@ export default class DropzoneComponentWrapper extends React.Component {
         this.dropzone = null;
     }
 
-    chooseTheme(emotions) {
-      console.log(emotions);
-      var maxConf = _.maxBy(emotions, 'Confidence');
-      var maxEmotion = maxConf.Type;
-      console.log(maxEmotion);
-      this.props.dispatch(change_theme(maxEmotion));
-    }
-
-
     success(file) {
       var _this = this;
-      console.log(file);
-      axios.post('/rekog', {filename: file.name})
-        .then(function(response) {
-          console.log("got face: ", response);
-          _this.chooseTheme(response.data.FaceDetails[0].Emotions);
-          _this.props.dispatch(update_progress(false));
-        })
-        .catch(function(error) {
-          _this.props.dispatch(update_progress(false));
-          console.log("error: ", error);
-        });
-      // change theme here
-
-    }
-
-    componentDidMount() {
-      console.log("props", this.props);
+      detectFace(file.name, this.props.hue)
+      .then(axios.spread(function(rekog_response, hue_response) {
+        _this.props.dispatch(update_progress(false));
+        _this.props.dispatch(change_theme(hue_response))
+        _this.props.dispatch(save_face_data(rekog_response.data.FaceDetails[0]))
+        _this.props.dispatch(update_boundingbox(rekog_response.data.FaceDetails[0].BoundingBox));
+      }))
+      .catch(function(error) {
+        _this.props.dispatch(update_progress(false));
+      });
     }
 
     render() {
@@ -90,7 +72,7 @@ export default class DropzoneComponentWrapper extends React.Component {
         const config = this.componentConfig;
         const djsConfig = this.djsConfig;
 
-        // For a list of all possible events (there are many), see README.md!
+        // For a list of all possible events (there are many), see dropzone.js README.md!
         const eventHandlers = {
             init: dz => this.dropzone = dz,
             drop: this.callbackArray,
