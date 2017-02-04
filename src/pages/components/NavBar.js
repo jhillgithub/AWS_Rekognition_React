@@ -35,9 +35,15 @@ const NavBar = (props) => (
     onTitleTouchTap={handleTouchTap}
     iconElementRight={
         <div>
-            <Link to={'/settings'} style={styles.link}>
+            <Link to={'/upload'} style={styles.link}>
                 <FlatButton
-                    label="Settings"
+                    label="Upload Image"
+                    style={styles.link}
+                 />
+            </Link>
+            <Link to={'/hue'} style={styles.link}>
+                <FlatButton
+                    label="Hue Settings"
                     style={styles.link}
                  />
             </Link>

@@ -13,6 +13,13 @@ const DEFAULT_LABELS = [
     'UNKNOWN'
 ];
 
+
+var radarChartOptions = {
+  maxValue: 0.5,
+  levels: 5,
+  roundStrokes: true,
+};
+
 function getData(face) {
   try {
     let retval = DEFAULT_LABELS.map(function(label) {
@@ -50,6 +57,6 @@ export default (props) => {
 };
 
   return (
-    <Radar data={chartData} />
+    <Radar data={chartData} options={radarChartOptions}/>
   )
 }

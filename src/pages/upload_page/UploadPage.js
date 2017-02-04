@@ -7,7 +7,7 @@ import ImageUploader from '../../components/ImageUploader';
 import DropzoneComponentWrapper from '../../components/DropzoneComponentWrapper';
 import DropUploader from '../../components/DropUploader';
 
-export default class SecondPage extends React.Component {
+export default class UploadPage extends React.Component {
 
   render() {
     return (
@@ -15,8 +15,8 @@ export default class SecondPage extends React.Component {
         <Col md={8} offset={{ md: 2 }}>
           <Card style={{textAlign: "center"}}>
             <CardTitle
-              title="Welcome To Settings!"
-              subtitle="WooHoo"
+              title="Welcome!"
+              subtitle="Please upload an image to get started"
             />
             <CardText>
               {/* <DropUploader /> */}

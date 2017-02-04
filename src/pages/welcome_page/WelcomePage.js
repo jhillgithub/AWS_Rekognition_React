@@ -30,7 +30,7 @@ import EmotionsPolarChart from './components/EmotionsPolarChart';
     boundingbox: store.boundingbox
   };
 })
-export default class Welcome extends React.Component {
+export default class WelcomePage extends React.Component {
   constructor(props) {
     super(props);
     this.chooseTheme = this.chooseTheme.bind(this);
@@ -122,18 +122,23 @@ export default class Welcome extends React.Component {
         <Row>
             <Col md={12}>
               <Card style={{textAlign: "center"}}>
-                <CardMedia>
-
-                </CardMedia>
                 <CardText>
+                  <Row>
+                    <Col md={6}>
+                      <EmotionsRadarChart {...this.props} />
+                    </Col>
+                    <Col md={6}>
+                      <EmotionsPolarChart {...this.props} />
+                    </Col>
+                  </Row>
+                </CardText>
+                <CardMedia>
                   <div>
                     <img src={this.props.selected_image ? this.state.base_url + this.props.selected_image: ""}>
-                      <div style={boundingBoxStyle}></div>
                     </img>
+                    {/* <div style={boundingBoxStyle}></div> */}
                   </div>
-                  <EmotionsRadarChart {...this.props} />
-                  <EmotionsPolarChart {...this.props} />
-                </CardText>
+                </CardMedia>
               </Card>
             </Col>
         </Row>

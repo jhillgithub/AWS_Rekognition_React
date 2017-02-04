@@ -2,16 +2,18 @@ import React from 'react'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 
 import Main from '../pages/Main'
-import Welcome from '../pages/welcome_page/Welcome'
-import Settings from '../pages/settings_page/Settings'
-import Admin from '../pages/admin_page/AdminPage'
+import WelcomePage from '../pages/welcome_page/WelcomePage'
+import UploadPage from '../pages/upload_page/UploadPage'
+import AdminPage from '../pages/admin_page/AdminPage'
+import HuePage from '../pages/hue_page/HuePage'
 
 module.exports = (
   <Router history={browserHistory}>
     <Route path="/" component={Main}>
-      <IndexRoute component={Welcome} />
-      <Route path="settings" component={Settings}/>
-      <Route path="admin" component={Admin}/>
+      <IndexRoute component={WelcomePage} />
+      <Route path="upload" component={UploadPage}/>
+      <Route path="admin" component={AdminPage}/>
+      <Route path="hue" component={HuePage}/>
     </Route>
   </Router>
 );
