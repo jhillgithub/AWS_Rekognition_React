@@ -1,7 +1,7 @@
 import { combineReducers } from "redux"
 
-import user from "./userReducer"
-import userTableConfig from "./userTableReducer"
+import userReducer from "./reducer_user"
+import userTableReducer from "./reducer_user_table"
 import themeReducer from "./reducer_themes"
 import galleryReducer from "./reducer_gallery"
 import rekogReducer from "./reducer_rekog"
@@ -10,8 +10,8 @@ import boundingboxReducer from "./reducer_boundingbox"
 import hueReducer from "./reducer_hue"
 
 export default combineReducers({
-  user,
-  userTableConfig,
+  user: userReducer,
+  userTableConfig: userTableReducer,
   themes: themeReducer,
   gallery: galleryReducer,
   rekog: rekogReducer,

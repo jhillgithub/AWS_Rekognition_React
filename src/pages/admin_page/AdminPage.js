@@ -3,8 +3,8 @@ import React from 'react';
 import { connect } from "react-redux";
 
 // Redux
-import { create_user, input_username, input_email } from '../../actions/userActions';
-import { update_table_config, toggle_table_config, close_table_config } from '../../actions/userTableActions';
+import { create_user, input_username, input_email } from '../../actions/action_user';
+import { update_table_config, toggle_table_config, close_table_config } from '../../actions/action_user_table';
 
 // UI
 import { Row, Col } from 'react-grid-system';
