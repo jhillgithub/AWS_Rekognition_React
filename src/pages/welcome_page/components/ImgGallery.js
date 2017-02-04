@@ -18,13 +18,19 @@ const styles = {
   },
 };
 
+function getID() {
+    const id = _.uniqueId("prefix-");
+    console.log("generated id: ", id);
+    return id
+}
+
 const base_url = "https://s3-us-west-2.amazonaws.com/reactrekognition/";
 const ImgGalleray = (props) => (
   <div style={styles.root}>
     <GridList style={styles.gridList} cols={4.2}>
       {props.images.map((image) => (
         <GridTile
-          key={image.Key}
+          key={getID()}
           title={image.Key}
           titleStyle={styles.titleStyle}
           titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"

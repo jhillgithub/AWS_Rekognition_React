@@ -10,7 +10,7 @@ import HueConnector from './components/HueConnector';
 import HueStatus from './components/HueStatus';
 
 // actions
-import { connect_hue, input_hue_user, input_hue_ip, input_hue_light_id } from '../../actions/action_hue';
+import { connect_hue, disconnect_hue, input_hue_user, input_hue_ip, input_hue_light_id } from '../../actions/action_hue';
 import { toggle_hue_light } from '../../actions/action_hue_toggle';
 
 
@@ -50,7 +50,7 @@ export default class HuePage extends Component {
   }
 
   handleDisconnect() {
-    this.props.dispatch(connect_hue(false));
+    this.props.dispatch(disconnect_hue());
   }
 
   handleTestConnection() {

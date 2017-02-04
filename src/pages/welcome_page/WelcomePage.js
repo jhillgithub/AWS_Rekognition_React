@@ -20,6 +20,8 @@ import ProcessingDialog from './components/ProcessingDialog';
 import EmotionsRadarChart from './components/EmotionsRadarChart';
 import EmotionsPolarChart from './components/EmotionsPolarChart';
 
+// Utils
+import { detectFace } from './utils';
 
 @connect((store) => {
   return {
@@ -27,7 +29,8 @@ import EmotionsPolarChart from './components/EmotionsPolarChart';
     processing: store.rekog.processing,
     face: store.rekog.face,
     selected_image: store.selected_image,
-    boundingbox: store.boundingbox
+    boundingbox: store.boundingbox,
+    hue: store.hue
   };
 })
 export default class WelcomePage extends React.Component {
@@ -56,18 +59,31 @@ export default class WelcomePage extends React.Component {
     this.props.dispatch(update_progress(true))
     this.props.dispatch(select_image(selected_img));
 
-    axios.post('/rekog', {filename: selected_img})
-      .then(function(response) {
-        console.log("got face: ", response);
-        _this.chooseTheme(response.data.FaceDetails[0].Emotions);
-        _this.props.dispatch(update_progress(false));
-        _this.props.dispatch(update_boundingbox(response.data.FaceDetails[0].BoundingBox));
-        _this.props.dispatch(save_face_data(response.data.FaceDetails[0]))
-      })
-      .catch(function(error) {
-        _this.props.dispatch(update_progress(false));
-        console.log("error: ", error);
-      });
+    detectFace(selected_img, this.props.hue)
+    .then(axios.spread(function(rekog_response, hue_response) {
+      console.log("got face: ", rekog_response);
+      _this.chooseTheme(rekog_response.data.FaceDetails[0].Emotions);
+      _this.props.dispatch(update_progress(false));
+      _this.props.dispatch(update_boundingbox(rekog_response.data.FaceDetails[0].BoundingBox));
+      _this.props.dispatch(save_face_data(rekog_response.data.FaceDetails[0]))
+    }))
+    .catch(function(error) {
+      _this.props.dispatch(update_progress(false));
+      console.log("error: ", error);
+    });
+
+    // axios.post('/rekog', {filename: selected_img})
+    //   .then(function(response) {
+    //     console.log("got face: ", response);
+    //     _this.chooseTheme(response.data.FaceDetails[0].Emotions);
+    //     _this.props.dispatch(update_progress(false));
+    //     _this.props.dispatch(update_boundingbox(response.data.FaceDetails[0].BoundingBox));
+    //     _this.props.dispatch(save_face_data(response.data.FaceDetails[0]))
+    //   })
+    //   .catch(function(error) {
+    //     _this.props.dispatch(update_progress(false));
+    //     console.log("error: ", error);
+    //   });
   }
 
   componentDidMount() {
