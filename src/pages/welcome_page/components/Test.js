@@ -29,7 +29,7 @@ class Test extends Component {
     displayImage() {
       if (this.props.selected_image) {
         console.log("selected", this.props.selected_image);
-        return <img src={'/uploads/' + this.props.selected_image} />
+        return <img src={'/uploads/' + this.props.selected_image} height="400px"/>
       } else {
         return null;
       }
@@ -59,7 +59,7 @@ class Test extends Component {
       }
 
       var halftone = new BreathingHalftone(img, {
-        // dotSizeThreshold: 0.1,
+        dotSizeThreshold: 0.1,
         isAdditive: true,
         // isRadial: true,
         friction: 0.04,
@@ -72,58 +72,6 @@ class Test extends Component {
       console.log(halftone);
       window.halftone = halftone;
 
-      try {
-        removeList = [];
-        elementsContainer = document.querySelector("canvas").parentNode;
-        elements = elementsContainer.childNodes;
-        if (elements.length > 2) {
-          for (var i = 0; i < elements.length; i++) {
-            if (elements[i].height == 0) {
-              removeList.unshift(i);
-            }
-          }
-        }
-        removeList.forEach(function(idx) {
-          elementsContainer.removeChild(elements[idx])
-        })
-      } catch(err) {
-        console.log("error cleaning up empty canvas elements");
-      }
-      // while(canvas) {
-      //   canvas.remove();
-      //   var canvas = document.querySelector("canvas");
-      // }
-      // try {
-      //   halftone.destroy();
-      // } catch(err) {
-      //   // Ignore Error
-      // }
-      // try {
-      //   var halftone = new BreathingHalftone(img, {
-      //     // dotSizeThreshold: 0.1,
-      //     isAdditive: true,
-      //     // isRadial: true,
-      //     friction: 0.04,
-      //     hoverDiameter: 0.8,
-      //     hoverForce: 0.007,
-      //     activeDiameter: 0.8,
-      //     activeForce: -0.007
-      //   });
-      //   console.log("redered halftone with props: ", this.props);
-      //   console.log(halftone);
-      //   window.halftone = halftone;
-      // } catch(err) {
-      //   var canvas = document.querySelector("canvas");
-      //   while(canvas) {
-      //     canvas.remove();
-      //     var canvas = document.querySelector("canvas");
-      //   }
-      //   try {
-      //     halftone.destroy();
-      //   } catch(err) {
-      //     // Ignore Error
-      //   }
-      // }
     }
 
     componentWillUnmount() {
