@@ -58,13 +58,6 @@ class Test extends Component {
         // Ignore Error
       }
 
-      // var canvas = document.querySelector("canvas");
-      // while(canvas) {
-      //   canvas.remove();
-      //   var canvas = document.querySelector("canvas");
-      // }
-
-
       var halftone = new BreathingHalftone(img, {
         // dotSizeThreshold: 0.1,
         isAdditive: true,
@@ -79,7 +72,23 @@ class Test extends Component {
       console.log(halftone);
       window.halftone = halftone;
 
-      // var canvas = document.querySelector("canvas");
+      try {
+        removeList = [];
+        elementsContainer = document.querySelector("canvas").parentNode;
+        elements = elementsContainer.childNodes;
+        if (elements.length > 2) {
+          for (var i = 0; i < elements.length; i++) {
+            if (elements[i].height == 0) {
+              removeList.unshift(i);
+            }
+          }
+        }
+        removeList.forEach(function(idx) {
+          elementsContainer.removeChild(elements[idx])
+        })
+      } catch(err) {
+        console.log("error cleaning up empty canvas elements");
+      }
       // while(canvas) {
       //   canvas.remove();
       //   var canvas = document.querySelector("canvas");
