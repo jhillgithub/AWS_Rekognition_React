@@ -6,6 +6,8 @@ import { Card, CardTitle, CardText, CardMedia } from 'material-ui/Card'
 
 // Components
 import DropzoneComponentWrapper from './components/DropzoneComponentWrapper';
+import ProcessingDialog from '../components/ProcessingDialog';
+import DataViz from '../components/DataViz';
 
 import { connect } from "react-redux";
 
@@ -13,6 +15,7 @@ import { connect } from "react-redux";
   return {
     processing: store.rekog.processing,
     face: store.rekog.face,
+    selected_image: store.selected_image,
     hue: store.hue
   };
 })
@@ -20,26 +23,23 @@ export default class UploadPage extends React.Component {
 
   render() {
     return (
-      <Row>
-        <Col md={8} offset={{ md: 2 }}>
-          <Card style={{textAlign: "center"}}>
-            <CardTitle
-              title="Welcome!"
-              subtitle="Please upload an image to get started"
-            />
-            <CardText>
-              <DropzoneComponentWrapper {...this.props}/>
-            </CardText>
-            <CardMedia>
-              <div className="selected">
-                {/* <img src={this.props.selected_image ? this.state.base_url + this.props.selected_image: ""} /> */}
-                {/* <img src={this.props.selected_image ? '/uploads/nictest2.jpg': ""} /> */}
-                {/* <div style={boundingBoxStyle}></div> */}
-              </div>
-            </CardMedia>
-          </Card>
-        </Col>
-      </Row>
+      <div>
+        <Row>
+          <Col md={12} style={{marginBottom: "60px"}}>
+            <ProcessingDialog processing={this.props.processing} />
+            <Card style={{textAlign: "center"}}>
+              <CardTitle
+                title="Welcome!"
+                subtitle="Please upload an image to get started"
+              />
+              <CardText>
+                <DropzoneComponentWrapper {...this.props}/>
+              </CardText>
+            </Card>
+          </Col>
+        </Row>
+        <DataViz {...this.props} />
+      </div>
     );
   }
 }

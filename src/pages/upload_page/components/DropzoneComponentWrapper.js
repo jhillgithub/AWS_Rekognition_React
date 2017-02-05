@@ -7,6 +7,7 @@ import DropzoneComponent from 'react-dropzone-component';
 // Actions
 import { change_theme } from '../../../actions/action_themes';
 import { update_progress, save_face_data } from '../../../actions/action_rekog';
+import { select_image } from '../../../actions/index';
 
 // Utils
 import { detectFace } from '../../utils';
@@ -47,6 +48,8 @@ export default class DropzoneComponentWrapper extends React.Component {
 
     success(file) {
       var _this = this;
+      this.props.dispatch(update_progress(true))
+      this.props.dispatch(select_image(file.name));
       detectFace(file.name, this.props.hue)
       .then(axios.spread(function(rekog_response, hue_response) {
         console.log("--------------------------------\n\n");

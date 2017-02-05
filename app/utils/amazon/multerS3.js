@@ -19,7 +19,7 @@ module.exports = (app) => {
   }
 
   const storage = multer.diskStorage({
-    destination: '../../../public/uploads/',
+    destination: './public/uploads/',
     filename: function(req, file, cb) {
       switch(file.mimetype) {
         case 'image/jpeg':

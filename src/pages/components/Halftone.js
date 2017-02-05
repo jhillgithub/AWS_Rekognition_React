@@ -1,35 +1,16 @@
 import React, { Component } from 'react'
+import BreathingHalftone from 'BreathingHalftone';
 
-class Test extends Component {
+class Halftone extends Component {
 
     constructor(props) {
         super(props)
     }
 
-    // componentWillReceiveProps(nextProps) {
-    //     if (nextProps.select_image === '') return;
-    //     if (nextProps.select_image !== this.props.select_image) {
-    //       var canvas = document.querySelector("canvas");
-    //       while(canvas) {
-    //         canvas.remove();
-    //         var canvas = document.querySelector("canvas");
-    //       }
-    //       try {
-    //         halftone.destroy();
-    //       } catch(err) {
-    //         // Ignore Error
-    //       }
-    //     }
-    // }
-
-    // componentDidUpdate(prevProps, prevState) {
-    //   this.update();
-    // }
-
     displayImage() {
       if (this.props.selected_image) {
         console.log("selected", this.props.selected_image);
-        return <img src={'/uploads/' + this.props.selected_image} height="400px"/>
+        return <img src={'/uploads/' + this.props.selected_image} />
       } else {
         return null;
       }
@@ -37,8 +18,6 @@ class Test extends Component {
 
     render() {
         this.update();
-        // this._table && this.update();
-        this._table;
         return (
           <div ref="container" className="selected">
             {this.displayImage()}
@@ -61,7 +40,7 @@ class Test extends Component {
       var halftone = new BreathingHalftone(img, {
         dotSizeThreshold: 0.1,
         isAdditive: true,
-        // isRadial: true,
+        isRadial: true,
         friction: 0.04,
         hoverDiameter: 0.8,
         hoverForce: 0.007,
@@ -83,4 +62,4 @@ class Test extends Component {
     }
 }
 
-export default Test
+export default Halftone
