@@ -20,7 +20,6 @@ const styles = {
 
 function getID() {
     const id = _.uniqueId("prefix-");
-    console.log("generated id: ", id);
     return id
 }
 

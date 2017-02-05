@@ -1,0 +1,27 @@
+{
+  "name": "AWS_Rekognition_React",
+  "description": "",
+  "main": [
+    "./src/app.js"
+  ],
+  "authors": [
+    "J"
+  ],
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "BreathingHalftone": "https://github.com/desandro/breathing-halftone.git"
+  },
+  "devDependencies": {
+    "chai": "1.10.0",
+    "mocha": "2.1.0"
+  }
+}

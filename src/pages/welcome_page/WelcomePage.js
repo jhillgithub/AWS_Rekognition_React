@@ -17,9 +17,12 @@ import ImgGallery from './components/ImgGallery';
 import ProcessingDialog from './components/ProcessingDialog';
 import EmotionsRadarChart from './components/EmotionsRadarChart';
 import EmotionsPolarChart from './components/EmotionsPolarChart';
+import Test from './components/Test';
 
 // Utils
 import { detectFace } from '../utils';
+
+import BreathingHalftone from 'BreathingHalftone';
 
 @connect((store) => {
   return {
@@ -71,6 +74,40 @@ export default class WelcomePage extends React.Component {
     })
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.selected_image != prevState.selected_image && prevProps.selected_image != '') {
+      // try {
+      //   var canvas = document.querySelector("canvas");
+      //   var canvasParent = canvas.parentNode;
+      //   while(canvasParent.firstChild) {
+      //     canvasParent.removeChild().remove();
+      //   }
+      //   // console.log("canvas", canvas);
+      //   // if (canvas.height == 0) {
+      //   //   canvas.remove();
+      //   // }
+      //   // canvas.parentNode.removeChild(canvas);
+      // } catch(err) {
+      //   // Ignore Error
+      // }
+
+      // var img = document.querySelector(".selected img");
+      // if (halftone) { halftone.destroy(); }
+      // var halftone = new BreathingHalftone(img, {
+      //   // dotSizeThreshold: 0.1,
+      //   isAdditive: true,
+      //   // isRadial: true,
+      //   friction: 0.04,
+      //   hoverDiameter: 0.8,
+      //   hoverForce: 0.007,
+      //   activeDiameter: 0.8,
+      //   activeForce: -0.007
+      // });
+      // window.halftone = halftone;
+    }
+
+  }
+
   render() {
     const boundingBox = {
       left: (this.props.boundingbox.Left*100) + "%",
@@ -108,21 +145,23 @@ export default class WelcomePage extends React.Component {
             <Col md={12}>
               <Card style={{textAlign: "center"}}>
                 <CardText>
-                  <Row>
+                  {/* <Row>
                     <Col md={6}>
                       <EmotionsRadarChart {...this.props} />
                     </Col>
                     <Col md={6}>
                       <EmotionsPolarChart {...this.props} />
                     </Col>
-                  </Row>
+                  </Row> */}
                 </CardText>
                 <CardMedia>
-                  <div>
-                    <img src={this.props.selected_image ? this.state.base_url + this.props.selected_image: ""}>
-                    </img>
-                    {/* <div style={boundingBoxStyle}></div> */}
-                  </div>
+                  <Test key={this.props.selected_image} selected_image={this.props.selected_image} />
+                  {/* <div className="selected">
+                    <img src={this.props.selected_image ? this.state.base_url + this.props.selected_image: ""} />
+                    <img src={this.props.selected_image ? '/uploads/' + this.props.selected_image: ""} />
+                    <img src={this.props.selected_image ? '/uploads/nictest2.jpg': ""} />
+                    <div style={boundingBoxStyle}></div>
+                  </div> */}
                 </CardMedia>
               </Card>
             </Col>

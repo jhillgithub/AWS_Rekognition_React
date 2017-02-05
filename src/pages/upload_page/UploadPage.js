@@ -1,12 +1,21 @@
 import React from 'react';
 
+// UI
 import { Row, Col } from 'react-grid-system';
+import { Card, CardTitle, CardText, CardMedia } from 'material-ui/Card'
 
-import { Card, CardTitle, CardText } from 'material-ui/Card';
-// import ImageUploader from '../../components/ImageUploader';
-import DropzoneComponentWrapper from './containers/DropzoneComponentWrapper';
-import DropUploader from './components/DropUploader';
+// Components
+import DropzoneComponentWrapper from './components/DropzoneComponentWrapper';
 
+import { connect } from "react-redux";
+
+@connect((store) => {
+  return {
+    processing: store.rekog.processing,
+    face: store.rekog.face,
+    hue: store.hue
+  };
+})
 export default class UploadPage extends React.Component {
 
   render() {
@@ -19,10 +28,15 @@ export default class UploadPage extends React.Component {
               subtitle="Please upload an image to get started"
             />
             <CardText>
-              {/* <DropUploader /> */}
-              <DropzoneComponentWrapper />
-              {/* <ImageUploader /> */}
+              <DropzoneComponentWrapper {...this.props}/>
             </CardText>
+            <CardMedia>
+              <div className="selected">
+                {/* <img src={this.props.selected_image ? this.state.base_url + this.props.selected_image: ""} /> */}
+                {/* <img src={this.props.selected_image ? '/uploads/nictest2.jpg': ""} /> */}
+                {/* <div style={boundingBoxStyle}></div> */}
+              </div>
+            </CardMedia>
           </Card>
         </Col>
       </Row>

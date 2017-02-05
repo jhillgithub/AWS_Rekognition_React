@@ -1,0 +1,13 @@
+{
+  "name": "BreathingHalftone",
+  "homepage": "https://github.com/desandro/breathing-halftone",
+  "_release": "3582136a12",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "3582136a123fafe9b5b018e5e3aac48d1c0e3677"
+  },
+  "_source": "https://github.com/desandro/breathing-halftone.git",
+  "_target": "*",
+  "_originalSource": "https://github.com/desandro/breathing-halftone.git"
+}

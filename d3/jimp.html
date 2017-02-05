@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.rawgit.com/oliver-moran/jimp/v0.2.27/browser/lib/jimp.min.js"></script>
+
+</head>
+<body>
+  <script>
+  Jimp.read("https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Nicolas_Cage_2011_CC.jpg/220px-Nicolas_Cage_2011_CC.jpg").then(function (lenna) {
+      lenna.resize(400, 400)            // resize
+           .quality(1)                 // set JPEG quality
+          //  .greyscale()                 // set greyscale
+          //  .getBase64(Jimp.MIME_JPEG, function (err, src) {
+          //     //  console.log(src);
+          //       var img = document.createElement("img");
+          //       img.setAttribute("src", src);
+          //       document.body.appendChild(img);
+          //  });
+      console.log(lenna.bitmap.data);
+  }).catch(function (err) {
+      console.error(err);
+  });
+  </script>
+</body>
+</html>

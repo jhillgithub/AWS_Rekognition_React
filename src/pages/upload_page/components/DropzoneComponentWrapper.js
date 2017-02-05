@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from "react-redux";
 import axios from 'axios';
 
 // Components
@@ -7,19 +6,12 @@ import DropzoneComponent from 'react-dropzone-component';
 
 // Actions
 import { change_theme } from '../../../actions/action_themes';
-import { update_progress } from '../../../actions/action_rekog';
+import { update_progress, save_face_data } from '../../../actions/action_rekog';
 
 // Utils
 import { detectFace } from '../../utils';
 
 
-@connect((store) => {
-  return {
-    processing: store.rekog.processing,
-    face: store.rekog.face,
-    hue: store.hue
-  };
-})
 export default class DropzoneComponentWrapper extends React.Component {
     constructor(props) {
         super(props);
@@ -29,7 +21,7 @@ export default class DropzoneComponentWrapper extends React.Component {
         // please consult http://www.dropzonejs.com/#configuration
         this.djsConfig = {
             addRemoveLinks: true,
-            acceptedFiles: "image/jpeg,image/png,image/gif"
+            acceptedFiles: "image/jpeg,image/png"
         };
 
         this.componentConfig = {
@@ -57,10 +49,12 @@ export default class DropzoneComponentWrapper extends React.Component {
       var _this = this;
       detectFace(file.name, this.props.hue)
       .then(axios.spread(function(rekog_response, hue_response) {
+        console.log("--------------------------------\n\n");
+        console.log("face", rekog_response);
+        console.log("--------------------------------\n\n");
         _this.props.dispatch(update_progress(false));
         _this.props.dispatch(change_theme(hue_response))
         _this.props.dispatch(save_face_data(rekog_response.data.FaceDetails[0]))
-        _this.props.dispatch(update_boundingbox(rekog_response.data.FaceDetails[0].BoundingBox));
       }))
       .catch(function(error) {
         _this.props.dispatch(update_progress(false));

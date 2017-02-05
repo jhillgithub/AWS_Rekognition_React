@@ -6,7 +6,18 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <style>
-  path {
+
+  .node {
+    fill: #ccc;
+    stroke: #fff;
+    stoke-width: 2px;
+  }
+
+  .link {
+    stroke: #777;
+    stroke-width: 2px;
+  }
+  /*path {
     fill: #ddd;
     fill-opacity: .8;
     stroke: #fff;
@@ -15,15 +26,16 @@
 
     line {
     stroke: #999;
-    }
+    }*/
   </style>
 </head>
 <body>
   <!-- <script src="./d3.v3.min.js"></script> -->
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.20/topojson.min.js"></script> -->
-  <canvas width="960" height="960"></canvas>
-  <script src="https://d3js.org/d3.v4.min.js"></script>
-  <script src="https://d3js.org/d3-voronoi.v1.min.js"></script>
+  <!-- <canvas width="960" height="960"></canvas> -->
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <!-- <script src="https://d3js.org/topojson.v1.min.js"></script> -->
+  <!-- <script src="https://d3js.org/d3-voronoi.v1.min.js"></script> -->
 
   <script>
 
@@ -131,125 +143,185 @@ var graph = {
   }]
 };
 
-// var width = 960,
-//     height = 500;
+var width = 1000,
+    height = 1000;
+
+var path = d3.geo.path(),
+    force = d3.layout.force().size([width, height]);
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var links = [
+  {source: "eyeLeft", target: "eyeRight"},
+  {source: "eyeLeft", target: "noseleft"},
+  {source: "eyeRight", target: "noseRight"},
+];
+
+var nodes = {};
+
+links.forEach(function(link) {
+  link.source = nodes[link.source] || (nodes[link.source] = {name: link.source});
+  link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});
+
+});
+
+console.log(nodes);
+// var nodes = [];
+// var links = [];
 //
-// var path = d3.geo.path(),
-//     force = d3.layout.force().size([width, height]);
+// // graph.nodes.map(obj => obj.x)
+// nodes = graph.nodes.map(function(obj){return {x:obj.x*1000, y:obj.y*1000}});
+// console.log("nodes", nodes);
+// d3.geom.voronoi().links(nodes).forEach(function(link) {
+//     // console.log(link);
+//     var dx = link.source.x - link.target.x,
+//         dy = link.source.y - link.target.y;
+//     link.distance = Math.sqrt(dx * dx + dy * dy);
+//     links.push(link);
+//   });
+
+  force
+      .gravity(0)
+      .nodes(d3.values(nodes))
+      .links(links)
+      .linkDistance(function(d) { return d.distance; })
+      .on("tick", tick)
+      .start();
+
+  var link = svg.selectAll(".link")
+      .data(links)
+    .enter().append("line")
+    .attr('class', 'link')
+      // .attr("x1", function(d) { return d.source.x; })
+      // .attr("y1", function(d) { return d.source.y; })
+      // .attr("x2", function(d) { return d.target.x; })
+      // .attr("y2", function(d) { return d.target.y; });
+
+  var node = svg.selectAll(".node")
+      .data(force.nodes())
+    .enter().append("circle")
+    .attr('class', 'node')
+    .attr('r', width=0.03)
+    //   .attr("transform", function(d) { return "translate(" + -d.x + "," + -d.y + ")"; })
+    //   .call(force.drag)
+    // .append("path")
+    //   .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+    //   .attr("d", function(d) { return path(d.feature); });
+
+  function tick(e) {
+    node.attr('cx', function(d) { return d.x})
+        .attr('cy', function(d) { return d.y})
+        .call(force.drag)
+        link.attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+  }
+// d3.voronoi().links(nodes).forEach(function(link) {
+//     var dx = link.source.x - link.target.x,
+//         dy = link.source.y - link.target.y;
+//     link.distance = Math.sqrt(dx * dx + dy * dy);
+//     links.push(link);
+//   });
+// console.log(links);
+//   var canvas = document.querySelector("canvas"),
+//       context = canvas.getContext("2d"),
+//       width = canvas.width,
+//       height = canvas.height;
 //
-// var svg = d3.select("body").append("svg")
-//     .attr("width", width)
-//     .attr("height", height);
-
-var nodes = [];
-var links = [];
-
-// graph.nodes.map(obj => obj.x)
-nodes = graph.nodes.map(function(obj){return {x:obj.x*100, y:obj.y*100}});
-
-d3.voronoi().links(nodes).forEach(function(link) {
-    var dx = link.source.x - link.target.x,
-        dy = link.source.y - link.target.y;
-    link.distance = Math.sqrt(dx * dx + dy * dy);
-    links.push(link);
-  });
-console.log(links);
-  var canvas = document.querySelector("canvas"),
-      context = canvas.getContext("2d"),
-      width = canvas.width,
-      height = canvas.height;
-
-  d3.select(canvas)
-      .call(d3.drag()
-          .container(canvas)
-          .subject(dragsubject)
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended));
-
-  function ticked() {
-    context.clearRect(0, 0, width, height);
-    context.save();
-    context.translate(width / 2, height / 2);
-
-    context.beginPath();
-    links.forEach(drawLink);
-    context.strokeStyle = "#aaa";
-    context.stroke();
-
-    context.beginPath();
-    nodes.forEach(drawNode);
-    context.fill();
-    context.strokeStyle = "#fff";
-    context.stroke();
-
-    context.restore();
-  }
-
-  function dragsubject() {
-    return simulation.find(d3.event.x - width / 2, d3.event.y - height / 2);
-  }
-
-  function dragstarted() {
-    if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-    d3.event.subject.fx = d3.event.subject.x;
-    d3.event.subject.fy = d3.event.subject.y;
-  }
-
-  function dragged() {
-    d3.event.subject.fx = d3.event.x;
-    d3.event.subject.fy = d3.event.y;
-  }
-
-  function dragended() {
-    if (!d3.event.active) simulation.alphaTarget(0);
-    d3.event.subject.fx = null;
-    d3.event.subject.fy = null;
-  }
-
-  function drawLink(d) {
-    context.moveTo(d.source.x, d.source.y);
-    context.lineTo(d.target.x, d.target.y);
-  }
-
-  function drawNode(d) {
-    context.moveTo(d.x + 3, d.y);
-    context.arc(d.x, d.y, 3, 0, 2 * Math.PI);
-  }
-  // force
-  //       .gravity(0)
-  //       .nodes(nodes)
-  //       .links(links)
-  //       .linkDistance(function(d) { return d.distance; })
-  //       .start();
-  //
-  //   var link = svg.selectAll("line")
-  //       .data(links)
-  //     .enter().append("line")
-  //       .attr("x1", function(d) { return d.source.x; })
-  //       .attr("y1", function(d) { return d.source.y; })
-  //       .attr("x2", function(d) { return d.target.x; })
-  //       .attr("y2", function(d) { return d.target.y; });
-  //
-  //   var node = svg.selectAll("g")
-  //       .data(nodes)
-  //     .enter().append("g")
-  //       .attr("transform", function(d) { return "translate(" + -d.x + "," + -d.y + ")"; })
-  //       .call(force.drag)
-  //     .append("path")
-  //       .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
-  //       .attr("d", function(d) { return path(d.feature); });
-  //
-  //   force.on("tick", function(e) {
-  //     link.attr("x1", function(d) { return d.source.x; })
-  //         .attr("y1", function(d) { return d.source.y; })
-  //         .attr("x2", function(d) { return d.target.x; })
-  //         .attr("y2", function(d) { return d.target.y; });
-  //
-  //     node.attr("transform", function(d) {
-  //       return "translate(" + d.x + "," + d.y + ")";
-  //     });
-  //   });
+//   d3.select(canvas)
+//       .call(d3.drag()
+//           .container(canvas)
+//           .subject(dragsubject)
+//           .on("start", dragstarted)
+//           .on("drag", dragged)
+//           .on("end", dragended));
+//
+//   function ticked() {
+//     context.clearRect(0, 0, width, height);
+//     context.save();
+//     context.translate(width / 2, height / 2);
+//
+//     context.beginPath();
+//     links.forEach(drawLink);
+//     context.strokeStyle = "#aaa";
+//     context.stroke();
+//
+//     context.beginPath();
+//     nodes.forEach(drawNode);
+//     context.fill();
+//     context.strokeStyle = "#fff";
+//     context.stroke();
+//
+//     context.restore();
+//   }
+//
+//   function dragsubject() {
+//     return simulation.find(d3.event.x - width / 2, d3.event.y - height / 2);
+//   }
+//
+//   function dragstarted() {
+//     if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+//     d3.event.subject.fx = d3.event.subject.x;
+//     d3.event.subject.fy = d3.event.subject.y;
+//   }
+//
+//   function dragged() {
+//     d3.event.subject.fx = d3.event.x;
+//     d3.event.subject.fy = d3.event.y;
+//   }
+//
+//   function dragended() {
+//     if (!d3.event.active) simulation.alphaTarget(0);
+//     d3.event.subject.fx = null;
+//     d3.event.subject.fy = null;
+//   }
+//
+//   function drawLink(d) {
+//     context.moveTo(d.source.x, d.source.y);
+//     context.lineTo(d.target.x, d.target.y);
+//   }
+//
+//   function drawNode(d) {
+//     context.moveTo(d.x + 3, d.y);
+//     context.arc(d.x, d.y, 3, 0, 2 * Math.PI);
+//   }
+//   force
+//         .gravity(0)
+//         .nodes(nodes)
+//         .links(links)
+//         .linkDistance(function(d) { return d.distance; })
+//         .start();
+//
+//     var link = svg.selectAll("line")
+//         .data(links)
+//       .enter().append("line")
+//         .attr("x1", function(d) { return d.source.x; })
+//         .attr("y1", function(d) { return d.source.y; })
+//         .attr("x2", function(d) { return d.target.x; })
+//         .attr("y2", function(d) { return d.target.y; });
+//
+//     var node = svg.selectAll("g")
+//         .data(nodes)
+//       .enter().append("g")
+//         .attr("transform", function(d) { return "translate(" + -d.x + "," + -d.y + ")"; })
+//         .call(force.drag)
+//       .append("path")
+//         .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+//         .attr("d", function(d) { return path(d.feature); });
+//
+//     force.on("tick", function(e) {
+//       link.attr("x1", function(d) { return d.source.x; })
+//           .attr("y1", function(d) { return d.source.y; })
+//           .attr("x2", function(d) { return d.target.x; })
+//           .attr("y2", function(d) { return d.target.y; });
+//
+//       node.attr("transform", function(d) {
+//         return "translate(" + d.x + "," + d.y + ")";
+//       });
+//     });
 </script>
 </body>
 </html>

@@ -16,5 +16,8 @@ module.exports = {
       }
     ]
   },
-  devtool: "inline-source-map"
+  devtool: "inline-source-map",
+  externals: {
+    "BreathingHalftone": "BreathingHalftone"
+  }
 };

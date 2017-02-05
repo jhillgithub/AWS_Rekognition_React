@@ -74,10 +74,8 @@ export function detectFace(selected_img, hue) {
     var hueSettings = convertEmotionToHueColor(maxEmotion);
     if (hue.hueConnected) {
       axios.put(HUE_URL, hueSettings);
-      return maxEmotion;
-    } else {
-      return "Please Connect Hue"
     }
+    return maxEmotion
   });
   return axios.all([rekog_promise, hue_promise]);
 }
