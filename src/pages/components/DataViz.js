@@ -7,7 +7,7 @@ import { Card, CardTitle, CardText, CardMedia } from 'material-ui/Card'
 // Components
 import Halftone from './Halftone';
 import EmotionsPolarChart from './EmotionsPolarChart';
-import EmotionsRadarChart from './EmotionsRadarChart';
+import EmotionsHBarChart from './EmotionsHBarChart';
 
 
 export default (props) => {
@@ -29,10 +29,10 @@ export default (props) => {
               <CardText>
                 <Row>
                   <Col md={6}>
-                    <EmotionsPolarChart {...props} />
+                    <EmotionsHBarChart {...props} />
                   </Col>
                   <Col md={6}>
-                    <EmotionsRadarChart {...props} />
+                    <EmotionsPolarChart {...props} />
                   </Col>
                 </Row>
               </CardText>
