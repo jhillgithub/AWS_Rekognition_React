@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack -w",
+    "build": "webpack",
     "postinstall": "webpack -p --config ./webpack.production.config.js --progress"
   },
   "author": "Jeremy Hill",
@@ -18,7 +18,6 @@
   "dependencies": {
     "aws-sdk": "^2.9.0",
     "axios": "^0.15.3",
-    "bluebird": "^3.4.7",
     "body-parser": "^1.16.0",
     "bower": "^1.8.0",
     "chart.js": "^2.4.0",
@@ -33,9 +32,7 @@
     "react": "^15.4.2",
     "react-chartjs-2": "^2.0.0",
     "react-dom": "^15.4.2",
-    "react-dropzone": "^3.9.1",
     "react-dropzone-component": "^1.4.1",
-    "react-dropzone-s3-uploader": "^0.10.0",
     "react-grid-system": "git+https://github.com/zoover/react-grid-system.git",
     "react-redux": "^5.0.2",
     "react-router": "^3.0.1",
