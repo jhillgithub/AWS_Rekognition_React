@@ -28,10 +28,10 @@ export default (props) => {
             <Card style={{textAlign: "center"}}>
               <CardText>
                 <Row>
-                  <Col md={6}>
+                  <Col sm={12} md={6}>
                     <EmotionsHBarChart {...props} />
                   </Col>
-                  <Col md={6}>
+                  <Col sm={12} md={6}>
                     <EmotionsPolarChart {...props} />
                   </Col>
                 </Row>
