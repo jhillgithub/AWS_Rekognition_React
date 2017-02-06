@@ -11,7 +11,7 @@
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack -w",
-    "postinstall": "bower install && webpack -p --config ./webpack.production.config.js --progress"
+    "postinstall": "webpack -p --config ./webpack.production.config.js --progress"
   },
   "author": "Jeremy Hill",
   "license": "ISC",
