@@ -1,7 +1,11 @@
 {
-  "name": "react-image-uploader",
+  "name": "react rekog emotion detector",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": "6.9.4",
+    "npm": "2.15.9"
+  },
   "main": "public/index.html",
   "scripts": {
     "start": "node server.js",
