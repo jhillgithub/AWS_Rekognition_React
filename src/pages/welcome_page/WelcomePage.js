@@ -92,7 +92,8 @@ export default class WelcomePage extends React.Component {
             <ProcessingDialog processing={this.props.processing} />
             <Card style={{textAlign: "center"}}>
               <CardTitle
-                title="Choose an image to get started"
+                title="Emotion Detection using Amazon's Deep Learning Facial Recognition Algorithm"
+                subtitle="Select an image for processing..."
               />
               <CardText>
                 <ImgGallery
