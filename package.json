@@ -1,5 +1,5 @@
 {
-  "name": "react rekog emotion detector",
+  "name": "aws_react_rekog_emotion_detector",
   "version": "1.0.0",
   "description": "",
   "engines": {
@@ -11,7 +11,7 @@
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack -w",
-    "postinstall": "bower install && webpack"
+    "postinstall": "bower install && -p --config ./webpack.production.config.js --progress"
   },
   "author": "Jeremy Hill",
   "license": "ISC",
@@ -20,6 +20,7 @@
     "axios": "^0.15.3",
     "bluebird": "^3.4.7",
     "body-parser": "^1.16.0",
+    "bower": "^1.8.0",
     "chart.js": "^2.4.0",
     "dropzone": "^4.3.0",
     "express": "^4.14.0",

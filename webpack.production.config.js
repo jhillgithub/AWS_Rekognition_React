@@ -1,14 +1,22 @@
+var path = require('path');
+var webpack = require('webpack');
+var nodeModulesPath = path.resolve(__dirname, 'node_modules');
+
 module.exports = {
   entry: "./src/app.js",
   output: {
-    filename: "public/bundle.js"
+    path: path.join(__dirname, 'public'),
+    filename: "public/bundle.js",
+    publicPath: '/public/',
+    libraryTarget: "umd"
   },
   module: {
     loaders: [
       {
         test: /\.js?$/,
-        include: /src/,
+        include: path.join(__dirname, 'src'),
         loader: "babel",
+        exclude: [nodeModulesPath],
         query: {
           presets: ["react", "es2015", "stage-0"],
           plugins: ["transform-decorators-legacy"],
@@ -16,7 +24,7 @@ module.exports = {
       }
     ]
   },
-  devtool: "inline-source-map",
+  devtool: "cheap-module-source-map",
   externals: {
     "BreathingHalftone": "BreathingHalftone"
   }
