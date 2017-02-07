@@ -9,6 +9,7 @@ export default function reducer(state={
       case CHANGE_THEME:
         return {...state, theme: action.payload}
       case COUNTER_EMOTIONS:
+        console.log("counter:", action.payload);
         return {...state, counterEmotions: action.payload}
       default:
         return state;

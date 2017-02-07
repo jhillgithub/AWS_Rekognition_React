@@ -5,7 +5,7 @@ import axios from 'axios';
 import DropzoneComponent from 'react-dropzone-component';
 
 // Actions
-import { change_theme } from '../../../actions/action_themes';
+import { change_theme, counter_emotions } from '../../../actions/action_themes';
 import { update_progress, save_face_data } from '../../../actions/action_rekog';
 import { select_image } from '../../../actions/index';
 
@@ -44,13 +44,14 @@ export default class DropzoneComponentWrapper extends React.Component {
         this.removedfile = file => console.log('removing...', file);
 
         this.dropzone = null;
+
     }
 
     success(file) {
       var _this = this;
       this.props.dispatch(update_progress(true))
       this.props.dispatch(select_image(file.name));
-      detectFace(file.name, this.props.hue)
+      detectFace(file.name, this.props.hue, this.props.counterEmotions)
       .then(axios.spread(function(rekog_response, hue_response) {
         console.log("--------------------------------\n\n");
         console.log("face", rekog_response);

@@ -4,6 +4,9 @@ import React from 'react';
 import { Row, Col } from 'react-grid-system';
 import { Card, CardTitle, CardText, CardMedia } from 'material-ui/Card'
 
+// Actions
+import { change_theme, counter_emotions } from '../../actions/action_themes';
+
 // Components
 import DropzoneComponentWrapper from './components/DropzoneComponentWrapper';
 import ProcessingDialog from '../components/ProcessingDialog';
@@ -16,10 +19,20 @@ import { connect } from "react-redux";
     processing: store.rekog.processing,
     face: store.rekog.face,
     selected_image: store.selected_image,
-    hue: store.hue
+    hue: store.hue,
+    counterEmotions: store.themes.counterEmotions
   };
 })
 export default class UploadPage extends React.Component {
+  constructor(props) {
+      super(props);
+      this.toggleHandler = this.toggleHandler.bind(this);
+  }
+
+  toggleHandler(event, value) {
+    console.log("toggleHandler", event, value);
+    this.props.dispatch(counter_emotions(value));
+  }
 
   render() {
     return (
@@ -38,7 +51,7 @@ export default class UploadPage extends React.Component {
             </Card>
           </Col>
         </Row>
-        <DataViz {...this.props} />
+        <DataViz toggleHandler={this.toggleHandler} {...this.props} />
       </div>
     );
   }

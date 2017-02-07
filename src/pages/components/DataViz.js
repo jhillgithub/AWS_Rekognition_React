@@ -41,7 +41,7 @@ export default (props) => {
                   <Col offset={{ sm: 4 }} sm={4}>
                     <Toggle
                       label="Counter Emotions"
-                      defaultToggled={false}
+                      defaultToggled={props.counterEmotions}
                       onToggle={props.toggleHandler}
                       labelPosition="right"
                       // style={{margin: 20}}
