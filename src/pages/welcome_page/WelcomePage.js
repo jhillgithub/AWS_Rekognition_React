@@ -18,7 +18,7 @@ import ProcessingDialog from '../components/ProcessingDialog';
 import DataViz from '../components/DataViz';
 
 // Utils
-import { detectFace } from '../utils';
+import { detectFace, update_hue_color } from '../utils';
 
 
 @connect((store) => {
@@ -29,7 +29,8 @@ import { detectFace } from '../utils';
     selected_image: store.selected_image,
     boundingbox: store.boundingbox,
     hue: store.hue,
-    counterEmotions: store.themes.counterEmotions
+    counterEmotions: store.themes.counterEmotions,
+    current_emotion: store.themes.theme
   };
 })
 export default class WelcomePage extends React.Component {
@@ -64,6 +65,7 @@ export default class WelcomePage extends React.Component {
   toggleHandler(event, value) {
     console.log("toggleHandler", event, value);
     this.props.dispatch(counter_emotions(value));
+    update_hue_color(this.props.hue, this.props.current_emotion, value);
   }
 
   componentDidMount() {

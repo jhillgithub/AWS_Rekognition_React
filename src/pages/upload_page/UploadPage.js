@@ -12,6 +12,9 @@ import DropzoneComponentWrapper from './components/DropzoneComponentWrapper';
 import ProcessingDialog from '../components/ProcessingDialog';
 import DataViz from '../components/DataViz';
 
+// Utils
+import { detectFace, update_hue_color } from '../utils';
+
 import { connect } from "react-redux";
 
 @connect((store) => {
@@ -20,7 +23,8 @@ import { connect } from "react-redux";
     face: store.rekog.face,
     selected_image: store.selected_image,
     hue: store.hue,
-    counterEmotions: store.themes.counterEmotions
+    counterEmotions: store.themes.counterEmotions,
+    current_emotion: store.themes.theme
   };
 })
 export default class UploadPage extends React.Component {
@@ -32,6 +36,7 @@ export default class UploadPage extends React.Component {
   toggleHandler(event, value) {
     console.log("toggleHandler", event, value);
     this.props.dispatch(counter_emotions(value));
+    update_hue_color(this.props.hue, this.props.current_emotion, value);
   }
 
   render() {

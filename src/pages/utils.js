@@ -86,6 +86,15 @@ export function convertEmotionToHueColor(emotion, counterEmotions) {
     }
 }
 
+export function update_hue_color(hue, emotion, counterEmotions) {
+  const HUE_URL = "http://"+hue.hueIP+"/api/"+hue.hueUser+"/lights/"+hue.hueLightID+"/state"
+  var hueSettings = convertEmotionToHueColor(emotion, counterEmotions);
+  if (hue.hueConnected) {
+    axios.put(HUE_URL, hueSettings);
+  }
+  return hueSettings;
+}
+
 export function detectFace(selected_img, hue, counterEmotions) {
   const HUE_URL = "http://"+hue.hueIP+"/api/"+hue.hueUser+"/lights/"+hue.hueLightID+"/state"
 
