@@ -23,7 +23,7 @@ export default class HuePage extends Component {
     const {stepIndex} = this.state;
     this.setState({
       stepIndex: stepIndex + 1,
-      finished: stepIndex >= 2,
+      finished: stepIndex >= 3,
     });
   };
 
@@ -40,9 +40,21 @@ export default class HuePage extends Component {
         return <p>Make sure that your hue bridge is connected to the local network</p>;
       case 1:
         return (
-          <p>Use this link to determine the ip address of your bridge: <a href="https://www.meethue.com/api/nupnp">www.meethue.com/api/nupnp</a></p>
+          <div>
+            <p>Use this link to determine the ip address of your bridge:
+              <a href="https://www.meethue.com/api/nupnp"> www.meethue.com/api/nupnp</a>
+            </p>
+          </div>
         );
       case 2:
+        return (
+          <div>
+            <p>Use this link to find or create an authorized hue user:
+              <a href="https://developers.meethue.com/documentation/getting-started"> https://developers.meethue.com/documentation/getting-started</a>
+            </p>
+          </div>
+        );
+      case 3:
         return (
           <HueForm {...this.props} />
         );
@@ -63,6 +75,9 @@ export default class HuePage extends Component {
           </Step>
           <Step>
             <StepLabel>Determine Network Address</StepLabel>
+          </Step>
+          <Step>
+            <StepLabel>Find or Create Authorized Hue User</StepLabel>
           </Step>
           <Step>
             <StepLabel>Test Connection</StepLabel>
@@ -92,7 +107,7 @@ export default class HuePage extends Component {
                   style={{marginRight: 12}}
                 />
                 <RaisedButton
-                  label={stepIndex === 2 ? 'Start Over' : 'Next'}
+                  label={stepIndex === 3 ? 'Start Over' : 'Next'}
                   primary={true}
                   onTouchTap={this.handleNext}
                 />

@@ -29,7 +29,8 @@ import { change_theme } from '../actions/action_themes';
 
 @connect((store) => {
   return {
-    theme: store.themes.theme
+    theme: store.themes.theme,
+    counterEmotions: store.themes.counterEmotions
   };
 })
 export default class Main extends React.Component {
@@ -39,37 +40,37 @@ export default class Main extends React.Component {
     this.selectTheme = this.selectTheme.bind(this);
   }
 
-  selectTheme(theme) {
+  selectTheme(theme, counterEmotions) {
     switch (theme) {
       case 'ANGRY':
-        return angryTheme;
+        return counterEmotions ? calmTheme : angryTheme;
         break;
       case 'CALM':
-        return calmTheme;
+        return counterEmotions ? happyTheme : calmTheme;
         break;
       case 'DISGUSTED':
-        return disgustedTheme;
+        return counterEmotions ? confusedTheme : disgustedTheme;
         break;
       case 'HAPPY':
-        return happyTheme;
+        return counterEmotions ? sadTheme : happyTheme;
         break;
       case 'SAD':
-        return sadTheme;
+        return counterEmotions ? happyTheme : sadTheme;
         break;
       case 'SURPRISED':
-        return surprisedTheme;
+        return counterEmotions ? disgustedTheme : surprisedTheme;
         break;
       case 'CONFUSED':
-        return confusedTheme;
+        return counterEmotions ? angryTheme : confusedTheme;
         break;
       default:
-        return unknownTheme;
+        return counterEmotions ? surprisedTheme : unknownTheme;
     }
   }
 
   render() {
     return (
-      <MuiThemeProvider muiTheme={getMuiTheme(this.selectTheme(this.props.theme))}>
+      <MuiThemeProvider muiTheme={getMuiTheme(this.selectTheme(this.props.theme, this.props.counterEmotions))}>
         <div>
             <NavBar title={this.props.theme} />
             <Container>

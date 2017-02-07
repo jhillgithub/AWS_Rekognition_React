@@ -50,6 +50,21 @@ class Halftone extends Component {
       console.log("redered halftone with props: ", this.props);
       console.log(halftone);
       window.halftone = halftone;
+      // This doesn't scale well for small images. Need to make it detect if
+      // larger than container skipping this for now.
+      // var canvas = document.querySelector('canvas');
+      // if (canvas) {
+      //   if (canvas.height > 0){
+      //     try {
+      //       canvas.style.width = '100%';
+      //       canvas.style.height = '100%';
+      //       canvas.width = offsetWidth;
+      //       canvas.height = offsetHeight;
+      //     } catch(err) {
+      //       // Ignore error
+      //     }
+      //   }
+      // }
 
     }
 

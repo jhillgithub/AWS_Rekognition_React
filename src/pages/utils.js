@@ -58,12 +58,35 @@ export function findMaxEmotion(emotions) {
   return maxEmotion;
 }
 
-export function convertEmotionToHueColor(emotion) {
-  var color = emotionToColor[emotion];
-  return color;
+export function convertEmotionToHueColor(emotion, counterEmotions) {
+    switch (emotion) {
+      case 'ANGRY':
+        return counterEmotions ? emotionToColor['CALM'] : emotionToColor['ANGRY'];
+        break;
+      case 'CALM':
+        return counterEmotions ? emotionToColor['HAPPY'] : emotionToColor['CALM'];
+        break;
+      case 'DISGUSTED':
+        return counterEmotions ? emotionToColor['CONFUSED'] : emotionToColor['DISGUSTED'];
+        break;
+      case 'HAPPY':
+        return counterEmotions ? emotionToColor['SAD'] : emotionToColor['HAPPY'];
+        break;
+      case 'SAD':
+        return counterEmotions ? emotionToColor['HAPPY'] : emotionToColor['SAD'];
+        break;
+      case 'SURPRISED':
+        return counterEmotions ? emotionToColor['DISGUSTED'] : emotionToColor['SURPRISED'];
+        break;
+      case 'CONFUSED':
+        return counterEmotions ? emotionToColor['ANGRY'] : emotionToColor['CONFUSED'];
+        break;
+      default:
+        return counterEmotions ? emotionToColor['SURPRISED'] : emotionToColor['UNKNOWN'];
+    }
 }
 
-export function detectFace(selected_img, hue) {
+export function detectFace(selected_img, hue, counterEmotions) {
   const HUE_URL = "http://"+hue.hueIP+"/api/"+hue.hueUser+"/lights/"+hue.hueLightID+"/state"
 
   var rekog_promise = axios.post('/rekog', {filename: selected_img});
@@ -71,7 +94,7 @@ export function detectFace(selected_img, hue) {
     // convert rekog_response to colors
     var emotions = rekog_response.data.FaceDetails[0].Emotions;
     var maxEmotion = findMaxEmotion(emotions);
-    var hueSettings = convertEmotionToHueColor(maxEmotion);
+    var hueSettings = convertEmotionToHueColor(maxEmotion, counterEmotions);
     if (hue.hueConnected) {
       axios.put(HUE_URL, hueSettings);
     }

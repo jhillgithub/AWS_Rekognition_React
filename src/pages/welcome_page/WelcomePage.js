@@ -7,7 +7,7 @@ import { Row, Col } from 'react-grid-system';
 import { Card, CardTitle, CardText, CardMedia } from 'material-ui/Card'
 
 // Actions
-import { change_theme } from '../../actions/action_themes';
+import { change_theme, counter_emotions } from '../../actions/action_themes';
 import { update_gallery } from '../../actions/action_gallery';
 import { update_progress, save_face_data } from '../../actions/action_rekog';
 import { select_image, update_boundingbox } from '../../actions/index';
@@ -28,13 +28,15 @@ import { detectFace } from '../utils';
     face: store.rekog.face,
     selected_image: store.selected_image,
     boundingbox: store.boundingbox,
-    hue: store.hue
+    hue: store.hue,
+    counterEmotions: store.themes.counterEmotions
   };
 })
 export default class WelcomePage extends React.Component {
   constructor(props) {
     super(props);
     this.clickHandler = this.clickHandler.bind(this);
+    this.toggleHandler = this.toggleHandler.bind(this);
     this.state = {
       base_url: "https://s3-us-west-2.amazonaws.com/reactrekognition/"
     }
@@ -47,7 +49,7 @@ export default class WelcomePage extends React.Component {
     this.props.dispatch(update_progress(true))
     this.props.dispatch(select_image(selected_img));
 
-    detectFace(selected_img, this.props.hue)
+    detectFace(selected_img, this.props.hue, this.props.counterEmotions)
     .then(axios.spread(function(rekog_response, hue_response) {
       _this.props.dispatch(update_progress(false));
       _this.props.dispatch(change_theme(hue_response))
@@ -57,6 +59,11 @@ export default class WelcomePage extends React.Component {
     .catch(function(error) {
       _this.props.dispatch(update_progress(false));
     });
+  }
+
+  toggleHandler(event, value) {
+    console.log("toggleHandler", event, value);
+    this.props.dispatch(counter_emotions(value));
   }
 
   componentDidMount() {
@@ -104,7 +111,7 @@ export default class WelcomePage extends React.Component {
             </Card>
           </Col>
         </Row>
-        <DataViz {...this.props} />
+        <DataViz toggleHandler={this.toggleHandler} {...this.props} />
       </div>
     );
   }

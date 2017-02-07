@@ -3,6 +3,8 @@ import React from 'react';
 // UI
 import { Row, Col } from 'react-grid-system';
 import { Card, CardTitle, CardText, CardMedia } from 'material-ui/Card'
+import Toggle from 'material-ui/Toggle';
+import Divider from 'material-ui/Divider';
 
 // Components
 import Halftone from './Halftone';
@@ -33,6 +35,17 @@ export default (props) => {
                   </Col>
                   <Col sm={12} md={6}>
                     <EmotionsPolarChart {...props} />
+                  </Col>
+                </Row>
+                <Row style={{marginTop: "60px"}}>
+                  <Col offset={{ sm: 4 }} sm={4}>
+                    <Toggle
+                      label="Counter Emotions"
+                      defaultToggled={false}
+                      onToggle={props.toggleHandler}
+                      labelPosition="right"
+                      // style={{margin: 20}}
+                    />
                   </Col>
                 </Row>
               </CardText>
