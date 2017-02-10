@@ -86,31 +86,44 @@ export default class WebcamPage extends React.Component {
 
   render() {
     return (
-      <Card>
-        <CardActions>
-          <RaisedButton
-            label="Capture Screenshot"
-            primary={true}
-            onClick={this.screenshot.bind(this)}
-          />
-        </CardActions>
-        <CardTitle
-          title="Welcome Class!"
-          subtitle="React Boiler Plate!"
-        />
-        <CardText>
-          <Webcam
-            ref='webcam'
-            audio={false}
-            screenshotFormat="image/jpeg"
-          />;
-        </CardText>
-        <DataViz toggleHandler={this.toggleHandler} {...this.props} />
-        <CardMedia>
-          { this.state.screenshot ? <img src={this.state.screenshot} /> : null }
-        </CardMedia>
+      <div>
+        <Row>
+          <Col md={12} style={{marginBottom: "60px"}}>
+            <Card style={{textAlign: "center"}}>
+              <CardTitle
+                title="Welcome!"
+                subtitle="Capture an Image to get started."
+              />
+              <CardActions>
+                <RaisedButton
+                  label="Capture Screenshot"
+                  primary={true}
+                  onClick={this.screenshot.bind(this)}
+                />
+              </CardActions>
+              <CardText>
+                <Webcam
+                  ref='webcam'
+                  audio={false}
+                  screenshotFormat="image/jpeg"
+                />;
+              </CardText>
+            </Card>
+          </Col>
+        </Row>
 
-      </Card>
+        <Row>
+          <Col md={12} style={{marginBottom: "60px"}}>
+            <Card style={{textAlign: "center"}}>
+              <DataViz toggleHandler={this.toggleHandler} {...this.props} />
+              <CardMedia>
+                { this.state.screenshot ? <img src={this.state.screenshot} /> : null }
+              </CardMedia>
+
+            </Card>
+          </Col>
+        </Row>
+      </div>
     );
   }
 }

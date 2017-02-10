@@ -46,9 +46,9 @@ const NavBar = (props) => (
     iconElementLeft={<Link to={'/'}><IconButton><ActionHome color={white} /></IconButton></Link>}
     iconElementRight={
         <div>
-            <Link to={'/upload'} style={styles.link}>
+            <Link to={'/webcam'} style={styles.link}>
                 <FlatButton
-                    label="Upload Image"
+                    label="Detect"
                     style={styles.link}
                  />
             </Link>
@@ -65,7 +65,7 @@ const NavBar = (props) => (
               targetOrigin={{horizontal: 'right', vertical: 'top'}}
               anchorOrigin={{horizontal: 'right', vertical: 'top'}}
             >
-              <Link to={'/'} style={{textDecoration: 'none'}}><MenuItem primaryText="About" /></Link>
+              <Link to={'/upload'} style={{textDecoration: 'none'}}><MenuItem primaryText="Upload" /></Link>
               <MenuItem href="https://github.com/jhillgithub/AWS_Rekognition_React" primaryText="Github" />
               <MenuItem href="https://www.linkedin.com/in/jeremy-hill-943506107" primaryText="Contact Me" />
             </IconMenu>
