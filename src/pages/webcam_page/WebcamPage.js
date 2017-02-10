@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { Row, Col } from 'react-grid-system';
 
 import { Card, CardTitle, CardText, CardMedia, CardActions } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -86,6 +87,13 @@ export default class WebcamPage extends React.Component {
   render() {
     return (
       <Card>
+        <CardActions>
+          <RaisedButton
+            label="Capture Screenshot"
+            primary={true}
+            onClick={this.screenshot.bind(this)}
+          />
+        </CardActions>
         <CardTitle
           title="Welcome Class!"
           subtitle="React Boiler Plate!"
@@ -96,15 +104,8 @@ export default class WebcamPage extends React.Component {
             audio={false}
             screenshotFormat="image/jpeg"
           />;
-          <DataViz toggleHandler={this.toggleHandler} {...this.props} />
         </CardText>
-        <CardActions>
-          <RaisedButton
-            label="Capture Screenshot"
-            primary={true}
-            onClick={this.screenshot.bind(this)}
-          />
-        </CardActions>
+        <DataViz toggleHandler={this.toggleHandler} {...this.props} />
         <CardMedia>
           { this.state.screenshot ? <img src={this.state.screenshot} /> : null }
         </CardMedia>
