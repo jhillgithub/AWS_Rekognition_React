@@ -24,6 +24,7 @@ module.exports = function (app) {
   });
 
   require('../utils/amazon/multerS3')(app);
+  require('../utils/amazon/multerBase64S3')(app);
 
   app.get('/getimages', function (req, res) {
     getImages()

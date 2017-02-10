@@ -48,6 +48,7 @@ export default class DropzoneComponentWrapper extends React.Component {
     }
 
     success(file) {
+      console.log("uploader success:", file);
       var _this = this;
       this.props.dispatch(update_progress(true))
       this.props.dispatch(select_image(file.name));

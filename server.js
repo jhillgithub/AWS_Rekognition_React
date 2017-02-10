@@ -12,6 +12,7 @@ var app = express();
 // Middleware
 app.use(wwwhisper(false));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser({limit: '50mb'}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
