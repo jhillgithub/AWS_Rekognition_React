@@ -52,9 +52,9 @@ const NavBar = (props) => (
                     style={styles.link}
                  />
             </Link>
-            <Link to={'/hue'} style={styles.link}>
+            <Link to={'/upload'} style={styles.link}>
                 <FlatButton
-                    label="Connect Hue"
+                    label="Upload"
                     style={styles.link}
                  />
             </Link>
@@ -65,7 +65,8 @@ const NavBar = (props) => (
               targetOrigin={{horizontal: 'right', vertical: 'top'}}
               anchorOrigin={{horizontal: 'right', vertical: 'top'}}
             >
-              <Link to={'/upload'} style={{textDecoration: 'none'}}><MenuItem primaryText="Upload" /></Link>
+              <Link to={'/about'} style={{textDecoration: 'none'}}><MenuItem primaryText="About" /></Link>
+              <Link to={'/hue'} style={{textDecoration: 'none'}}><MenuItem primaryText="Connect Hue" /></Link>
               <MenuItem href="https://github.com/jhillgithub/AWS_Rekognition_React" primaryText="Github" />
               <MenuItem href="https://www.linkedin.com/in/jeremy-hill-943506107" primaryText="Contact Me" />
             </IconMenu>
