@@ -13,7 +13,8 @@ module.exports = (app) => {
               ACL: 'public-read',
               Body: fs.createReadStream(file.path),
               Key: file.originalname,
-              ContentType: 'application/octet-stream'
+              ContentType: 'application/octet-stream',
+              ACL: 'public-read'
           })
           .send(callback);
   }

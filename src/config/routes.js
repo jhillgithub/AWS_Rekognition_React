@@ -7,6 +7,7 @@ import UploadPage from '../pages/upload_page/UploadPage'
 import AdminPage from '../pages/admin_page/AdminPage'
 import HuePage from '../pages/hue_page/HuePage'
 import WebcamPage from '../pages/webcam_page/WebcamPage'
+import AboutPage from '../pages/about_page/AboutPage'
 
 module.exports = (
   <Router history={browserHistory}>
@@ -16,6 +17,7 @@ module.exports = (
       <Route path="admin" component={AdminPage}/>
       <Route path="hue" component={HuePage}/>
       <Route path="webcam" component={WebcamPage}/>
+      <Route path="about" component={AboutPage}/>
     </Route>
   </Router>
 );

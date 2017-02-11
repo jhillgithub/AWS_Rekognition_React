@@ -19,7 +19,8 @@ module.exports = (app) => {
       Key: filename,
       Body: buf,
       ContentEncoding: 'base64',
-      ContentType: 'image/jpeg'
+      ContentType: 'image/jpeg',
+      ACL: 'public-read'
     };
     fs.writeFile('./public/uploads/' + filename, buf, 'base64', function (err) {
       if (err) return next(err)
